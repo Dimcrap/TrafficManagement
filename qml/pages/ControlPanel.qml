@@ -9,8 +9,9 @@ Rectangle {
     border.color: "bebebe"
 
     ColumnLayout{
-        //a
-        //
+        anchors.fill: parent
+        anchors.margins: 10
+
         spacing: 10
 
         Text {
@@ -34,5 +35,41 @@ Rectangle {
             onClicked: console.log("Simulation stoped!")
         }
 
+        Slider{
+            id:speedSlider
+            Layout.fillWidth:true
+            from: 0
+            to:100
+            value: 50
+            onValueChanged: console.log("Speed set to :",value)
+        }
+
+        Text {
+
+            text: qsTr("Simulation Speed: "+Math.round(speedSlider.value))
+            Layout.alignment: Qt.AlignHCenter
+        }
+
+        ComboBox{
+            Layout.fillWidth: true
+            model: ["Low Traffic","Medium Traffic","High Traffic"]
+            onCurrentTextChanged: console.log("Traffic density:",currentText)
+        }
+
+        RowLayout{
+            Layout.fillWidth: true
+
+            Button{
+                text:"Add Car"
+                Layout.fillWidth: true
+                onClicked: console.log("Add car clicked")
+            }
+
+            Button{
+                text:"Add Truck"
+                Layout.fillWidth: true
+                onClicked: console.log("Add truck clicked")
+            }
+        }
     }
 }
