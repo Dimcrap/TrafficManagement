@@ -26,6 +26,9 @@ qt_add_qml_module(appTrafficManagement
         qml/components/TrafficLight.qml
         qml/components/Vehicle.qml
         qml/pages/ControlPanel.qml
+        QML_FILES qml/simulationEngine.qml
+        QML_FILES qml/pages/area.qml
+        QML_FILES qml/components/PositionCalculator.qml
 
 )
 

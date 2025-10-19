@@ -3,39 +3,39 @@ import QtQuick.Shapes
 
 Item {
     id: container
-    width: 84
-    height: 204
+    width: 46
+    height: 84
     property string state: "red"
 
-    Rectangle{
-        id:shodow
-        anchors.centerIn: parent
-        width: trafficLight.width+4
-        height: trafficLight.height+4
-        color:"#40000000"
-        radius: parent.radius+2
-        z:-1
-    }
-
-    Rectangle{
-        id:shadow2
-        anchors.centerIn: parent
-        width: trafficLight.width+8
-        height: trafficLight.width+8
-        color: "#20000000"
-        radius: trafficLight.radius+4
-        z: -2
-    }
 
 
     Rectangle {
         id:trafficLight
-        width: 80
-        height: 200
+        width: 45
+        height: 80
         color:"#2a2a2a"
         radius: 10
-        border { color: "#000" ; width: 2 }
 
+
+        Rectangle{
+            id:shodow
+            anchors.centerIn: parent
+            width: trafficLight.width+4
+            height: trafficLight.height+4
+            color:"#40000000"
+            radius: parent.radius+2
+            z:-1
+        }
+
+        Rectangle{
+            id:shadow2
+            anchors.centerIn: parent
+            width: trafficLight.width+8
+            height: trafficLight.width+8
+            color: "#20000000"
+            radius: trafficLight.radius+4
+            z: -2
+        }
 
        Shape{
            anchors.fill: parent
@@ -72,21 +72,21 @@ Item {
     }
 
     Column{
-        spacing: 10
+        spacing: 6
         anchors.centerIn: parent
 
 
         Rectangle{
             id:redLight
-            width: 50;height: 50;radius: 25
-            color: trafficLight.state === "red" ? "red" : "#400"
+            width: 20;height: 20;radius: 20
+            color: container.state === "red" ? "red" : "#400"
             border {color: "#200" ; width: 2}
 
             Rectangle{
                 width: parent.width *0.3;height: parent.height * 0.3
                 radius: width /2
                 anchors {top: parent.top ; right: parent.right; margins: 5 }
-                color: trafficLight.state === "red" ? "red" : "#400"
+                color: container.state === "red" ? "red" : "#400"
                 opacity: 0.8
 
             }
@@ -94,30 +94,30 @@ Item {
 
         Rectangle{
             id : yellowLight
-            width: 50; height: 50; radius: 25;
-            color:trafficLight.state==="yellow"? "yellow" : "#440"
+            width: 20; height: 20; radius: 25;
+            color:container.state==="yellow"? "yellow" : "#440"
             border {color : "#220"; width: 2}
 
             Rectangle{
             width: parent.width * 0.3 ; height: parent.height * 0.3
             radius: width/2
             anchors {top:parent.top;right:parent.right;margins: 5}
-            color: trafficLight.state ==="yellow" ? "#ffffaa" :"#666622"
+            color: container.state ==="yellow" ? "#ffffaa" :"#666622"
             opacity: 0.8
             }
         }
 
         Rectangle{
             id:greenLight
-            width:50;height:50;radius:25;
-            color:trafficLight.state ==="green" ? "green" : "#040"
+            width:20;height:20;radius:25;
+            color:container.state ==="green" ? "green" : "#040"
             border {color: "#020";width:2}
 
             Rectangle{
                 width:parent.width *0.3 ;height: parent.height * 0.3
                 radius: width/2
                 anchors {top:parent.top ; right: parent.right; margins: 5}
-                color: trafficLight.state ==="green" ?"#aaffaa" : "#226622"
+                color: container.state ==="green" ?"#aaffaa" : "#226622"
                 opacity: 0.8
                 }
         }

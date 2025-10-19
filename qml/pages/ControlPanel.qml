@@ -1,12 +1,18 @@
 import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
+import ControlPanelHandler
 
 
 Rectangle {
+
     id: controlPanel
-    color: "#dee46f "
-    border.color: "bebebe"
+    color: "#f5f5f5"
+    border.color: "#cccccc"
+
+    ControlPanelHandler{
+        id:handler
+    }
 
     ColumnLayout{
         anchors.fill: parent
@@ -25,7 +31,7 @@ Rectangle {
             text: "Start Simulatin"
             Layout.fillWidth: true
             onClicked: {
-                conslog.log("Simulation started!")
+                console.log("Simulation started!")
             }
         }
 
@@ -41,6 +47,7 @@ Rectangle {
             from: 0
             to:100
             value: 50
+            //onValueChanged: handler.onSpeedSlider(value)
             onValueChanged: console.log("Speed set to :",value)
         }
 
@@ -53,23 +60,10 @@ Rectangle {
         ComboBox{
             Layout.fillWidth: true
             model: ["Low Traffic","Medium Traffic","High Traffic"]
+            //onCurrentTextChanged:handler.onTrafficState(currentText)
             onCurrentTextChanged: console.log("Traffic density:",currentText)
+
         }
 
-        RowLayout{
-            Layout.fillWidth: true
-
-            Button{
-                text:"Add Car"
-                Layout.fillWidth: true
-                onClicked: console.log("Add car clicked")
-            }
-
-            Button{
-                text:"Add Truck"
-                Layout.fillWidth: true
-                onClicked: console.log("Add truck clicked")
-            }
-        }
     }
 }
