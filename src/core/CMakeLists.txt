@@ -6,6 +6,9 @@ vehiclemodel.h
 trafficcontroller.h
 
 controlpanelhandler.h controlpanelhandler.cpp
+positioncalculator.h positioncalculator.cpp
+primaryisoscene.h primaryisoscene.cpp
+primaryisoscene.h primaryisoscene.cpp
 )
 
 

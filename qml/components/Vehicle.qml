@@ -23,11 +23,11 @@ Rectangle{
     }
 
     Behavior on x{
-        NumberAnimation {duration:200}
+        NumberAnimation {duration:400} //easing.type: Easing.InOutQuad
     }
 
     Behavior on y{
-        NumberAnimation {duration:200}
+        NumberAnimation {duration:400}
     }
 
 

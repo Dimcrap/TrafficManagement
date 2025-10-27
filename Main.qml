@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import TrafficManagement 1.0
 
 Window {
-    width: 640
+    width: 760
     height: 480
     visible: true
     title: qsTr("Traffic Management")
@@ -42,7 +42,7 @@ Window {
 
             TrafficLight {
                 x:250 ; y:70
-                state:"yellow"
+                state:"red"
             }
 
             Text {
