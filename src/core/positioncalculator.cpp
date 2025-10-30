@@ -37,7 +37,6 @@ QPointF PositionCalculator::snapToGrid(double isoX, double isoY) const
 
 void PositionCalculator::setTileSize(double width, double height)
 {
-    
     m_tileWidth=width;
     m_tileHeight=height;
     emit tileSizeChanged();

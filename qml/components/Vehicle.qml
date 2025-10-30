@@ -1,5 +1,6 @@
 import QtQuick 2.15
 
+// Force QML module regeneration
 Rectangle{
 
     id:vehicle

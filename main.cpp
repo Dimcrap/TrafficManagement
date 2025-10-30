@@ -1,17 +1,19 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "controlpanelhandler.h"
-
+#include "positioncalculator.h"
+#include <QDebug>
+#include <QResource>
+#include <QDir>
 
 
 int main(int argc, char *argv[])
 {
 
 
-    qmlRegisterType<ControlPanelHandler>("ControlPanelHandler",1,0,"ControlPanelHandler");
-
 
     QGuiApplication app(argc, argv);
+    qmlRegisterType<ControlPanelHandler>("ControlPanelHandler",1,0,"ControlPanelHandler");
 
     QQmlApplicationEngine engine;
     QObject::connect(
@@ -20,7 +22,35 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("TrafficManagement", "Main");
+
+    PositionCalculator positioncalculator;
+
+   // engine.rootContext()->setContextProperty("positionCalculator",&positioncalculator);
+
+  engine.loadFromModule("TrafficManagement", "Main");
+
+
+
+  QResource resource(":/images/greenbelt/tree1.png");
+  if (resource.isValid()) {
+      qDebug() << "Resource found! Size:" << resource.size();
+  } else {
+      qDebug() << "Resource NOT found!";
+
+      // List all available resources
+      qDebug() << "Available resources:";
+      QStringList allResources = {":/", ":/images", ":/images/greenbelt"};
+      for (const QString &path : allResources) {
+          if (QDir(path).exists()) {
+              qDebug() << "Directory exists:" << path;
+              QStringList entries = QDir(path).entryList();
+              for (const QString &entry : entries) {
+                  qDebug() << "  -" << entry;
+              }
+          }
+      }
+  }
+
 
     return app.exec();
 }

@@ -17,18 +17,31 @@ qt_add_executable(appTrafficManagement
     main.cpp
 )
 
+set(QT_QMLLINT_OVERWRITE TRUE)
+
+file(GLOB_RECURSE IMAGE_FILES
+    "images/*.png"
+    "images/*.jpg"
+)
+qt_add_resources(appTrafficManagement "my_resources"
+    PREFIX "/"
+    BASE "."
+    FILES
+    ${IMAGE_FILES}
+)
 
 qt_add_qml_module(appTrafficManagement
     URI TrafficManagement
     VERSION 1.0
+    SOURCES
+    
     QML_FILES
         Main.qml
+        qml/pages/Area.qml
         qml/components/TrafficLight.qml
         qml/components/Vehicle.qml
         qml/pages/ControlPanel.qml
-        QML_FILES qml/simulationEngine.qml
-        QML_FILES qml/pages/area.qml
-        QML_FILES
+        qml/simulationEngine.qml
 
 )
 
@@ -48,6 +61,7 @@ target_link_libraries(appTrafficManagement
     traffic_core
     #traffic_utils
 )
+
 
 include(GNUInstallDirs)
 install(TARGETS appTrafficManagement
