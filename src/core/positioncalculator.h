@@ -10,6 +10,12 @@ class PositionCalculator :public QObject
 {
 
     Q_OBJECT
+    Q_PROPERTY(double tileWidth READ getTileWidth NOTIFY tileSizeChanged )
+    Q_PROPERTY(double tileHeight READ getTileHeight NOTIFY tileSizeChanged )
+
+private:
+    double m_tileWidth;
+    double m_tileHeight;
 
 public:
 
@@ -19,15 +25,13 @@ public:
     Q_INVOKABLE QPoint isoToScreen(QPointF isometric) const;
     Q_INVOKABLE QPointF snapToGrid(double isoX, double isoY) const;
 
+    Q_INVOKABLE void calculateTileSize(double containerWidth, double containerHeight, int gridTileX, int gridTileY);
     Q_INVOKABLE void setTileSize(double width, double height);
-    Q_INVOKABLE double getTileWidth() const { return m_tileWidth; }
-    Q_INVOKABLE double getTileHeight() const { return m_tileHeight; }
+    double getTileWidth() const { return m_tileWidth; }
+    double getTileHeight() const { return m_tileHeight; }
+
 signals:
  void  tileSizeChanged();
-
-private:
-    double m_tileWidth;
-    double m_tileHeight;
 
 };
 

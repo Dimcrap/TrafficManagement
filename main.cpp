@@ -13,9 +13,11 @@ int main(int argc, char *argv[])
 
 
     QGuiApplication app(argc, argv);
-    qmlRegisterType<ControlPanelHandler>("ControlPanelHandler",1,0,"ControlPanelHandler");
-
     QQmlApplicationEngine engine;
+
+    qmlRegisterType<ControlPanelHandler>("ControlPanelHandler",1,0,"ControlPanelHandler");
+    qmlRegisterType<PositionCalculator>("MyApp.posCalculator",1,0,"Positioncalculator");
+
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
@@ -25,7 +27,7 @@ int main(int argc, char *argv[])
 
     PositionCalculator positioncalculator;
 
-   // engine.rootContext()->setContextProperty("positionCalculator",&positioncalculator);
+
 
   engine.loadFromModule("TrafficManagement", "Main");
 

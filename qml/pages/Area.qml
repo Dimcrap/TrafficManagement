@@ -2,13 +2,24 @@ import QtQuick 2.15
 import QtQuick.Controls
 import QtQuick.Layouts
 import TrafficManagement 1.0
+import MyApp.posCalculator
 
 Item {
 
     id:root
-    width: 759
-    height: 479
+    width: parent.width
+    height: parent.width
 
+    Positioncalculator{
+        id :poscalculator
+    }
+
+    Component.onCompleted:{
+        poscalculator.calculateTileSize(width,height,10,10)
+    }
+
+    onWidthChanged:poscalculator.calculateTileSize(width,height,10,10)
+    onHeightChanged:poscalculator.calculateTileSize(width,height,10,10)
 
     RowLayout{
         anchors.fill: parent
@@ -25,31 +36,44 @@ Item {
 
             Image {
                 id: tree
-                x:100; y:230
                 source: "qrc:/images/greenbelt/tree1.png"
-                width: parent.width * 0.08
-                height: parent.height * 0.09
+                width: poscalculator.tileWidth * 0.6
+                height: poscalculator.tileHeight
+
+                x:poscalculator.isoToScreen(Qt.point(3,2)).x
+                y:poscalculator.isoToScreen(Qt.point(3,2)).y
             }
 
 
 
             Image {
                 id: house
-                x:65; y:160
                 source: "qrc:/images/structures/H4rightToLeft(1).png"
-                width: parent.width * 0.08
-                height:parent.height * 0.09
+                width: poscalculator.tileWidth * 0.6
+                height: poscalculator.tileHeight
 
+                x:poscalculator.isoToScreen(Qt.point(4,1)).x
+                y:poscalculator.isoToScreen(Qt.point(4,1)).y
 
+/*
                 onStatusChanged: {
                            if (status === Image.Error) {
                                console.log("Failed to load image:", source)
                            } else if (status === Image.Ready) {
                                console.log("Image loaded successfully")
                            }
-                       }
+                       }*/
             }
 
+            Image {
+                id: house2
+                source: "qrc:/images/structures/H3leftToright.png"
+                width: poscalculator.tileWidth * 0.6
+                height: poscalculator.tileHeight
+
+                x:poscalculator.isoToScreen(Qt.point(5,2)).x
+                y:poscalculator.isoToScreen(Qt.point(5,2)).y
+            }
 
             Vehicle{
                 x:50; y:50
