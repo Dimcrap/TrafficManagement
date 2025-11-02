@@ -1,46 +1,55 @@
 import QtQuick 2.15
 
-// Force QML module regeneration
+
 Item {
 
     id:vehicle
 
-    property int model: 1
-    property color vehicleColor: "red"
-    property real speed:0
+
+    property string vDirection:"vertical"
+    property string vLine:"right"
+    property int vwidth:24
+    property int vheight:24
+    property real speed:1.7
+
+/*
+    Component.onCompleted: {
+         console.log("Vehicle properties:", vDirection, vLine, vwidth, vheight, speed)
+     }*/
+
 
     function selectCar(direction,line){
         var randomNum= Math.floor(Math.random() *4 )+1
-        if(direction==vertical && line==right){
 
-        }else if(direction==vertical && line==right){
-            return "qrc:/images/isocars/Vright"+randumNum+".png"
-        }else if(direction==vertical && line==left){
-            return "qrc:/images/isocars/Vleft"+randumNum+".png"
-        }else if(direction==horizentical && line==right){
-            return "qrc:/images/isocars/Vright"+randumNum+".png"
-        }else{//direction==vertical && line==left
-            return "qrc:/images/isocars/Vleft"+randumNum+".png"
+        if(direction==="vertical" && line==="right"){
+            return "qrc:/images/isocars/Vright"+randomNum+".png"
+        }else if(direction==="vertical" && line==="left"){
+            return "qrc:/images/isocars/Vleft"+randomNum+".png"
+        }else if(direction==="horizental" && line==="right"){
+            return "qrc:/images/isocars/Vright"+randomNum+".png"
+        }else{//direction==horizentical && line==left
+            return "qrc:/images/isocars/Vleft"+randomNum+".png"
         }
 
 
     }
 
+    width: vwidth
+    height: vheight
 
     Image {
-        id:carimg
-        source: model== 1 ? "qrc:/images/isocars/"
+        id:carImg
+        source: selectCar(vDirection,vLine)
+        anchors.fill: parent
     }
-    width: type === "truck" ?60:40
-    height: type === "truck" ?30 :20
 
+/*
     Text {
         anchors.centerIn: parent
         text: qsTr(Math.round(speed)+" km/h" )
         font.pixelSize: 8
-        color: "white"
+        color: "black"
     }
-
     Behavior on x{
         NumberAnimation {duration:400} //easing.type: Easing.InOutQuad
     }
@@ -48,6 +57,7 @@ Item {
     Behavior on y{
         NumberAnimation {duration:400}
     }
+*/
 
 
 }

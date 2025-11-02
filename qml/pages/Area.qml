@@ -16,10 +16,17 @@ Item {
 
     Component.onCompleted:{
         poscalculator.calculateTileSize(width,height,10,10)
+        poscalculator.calculateOrigin(width,height)
     }
 
-    onWidthChanged:poscalculator.calculateTileSize(width,height,10,10)
-    onHeightChanged:poscalculator.calculateTileSize(width,height,10,10)
+    onWidthChanged:{
+        poscalculator.calculateTileSize(width,height,10,10);
+        poscalculator.calculateOrigin(width,height) ;
+    }
+    onHeightChanged:{
+        poscalculator.calculateTileSize(width,height,10,10);
+        poscalculator.calculateOrigin(width,height) ;
+    }
 
     RowLayout{
         anchors.fill: parent
@@ -42,6 +49,7 @@ Item {
 
                 x:poscalculator.isoToScreen(Qt.point(3,2)).x
                 y:poscalculator.isoToScreen(Qt.point(3,2)).y
+
             }
 
 
@@ -54,16 +62,8 @@ Item {
 
                 x:poscalculator.isoToScreen(Qt.point(4,1)).x
                 y:poscalculator.isoToScreen(Qt.point(4,1)).y
-
-/*
-                onStatusChanged: {
-                           if (status === Image.Error) {
-                               console.log("Failed to load image:", source)
-                           } else if (status === Image.Ready) {
-                               console.log("Image loaded successfully")
-                           }
-                       }*/
             }
+
 
             Image {
                 id: house2
@@ -75,30 +75,33 @@ Item {
                 y:poscalculator.isoToScreen(Qt.point(5,2)).y
             }
 
-            Vehicle{
-                x:50; y:50
-                type:"car"
-                vehicleColor:"yellow"
-                speed:60
 
-            }
             Vehicle{
-                x:150 ; y:150
-                type:"truck"
-                vehicleColor: "blue"
-                speed:40
+                id:vehicleInstance
+                vDirection :"vertical"
+                vLine:"right"
+                vwidth: poscalculator.tileWidth * 0.6
+                vheight: poscalculator.tileHeight
+                speed:75
+                x:poscalculator.isoToScreen(Qt.point(5,6)).x
+                y:poscalculator.isoToScreen(Qt.point(5,6)).y
+
+                Component.onCompleted: {
+                        console.log("=== Vehicle Debug ===")
+                        console.log("tileWidth:", poscalculator.tileWidth)
+                        console.log("tileHeight:", poscalculator.tileHeight)
+                        console.log("Point result:", poscalculator.isoToScreen(Qt.point(5,10)))
+                        console.log("Vehicle x:", x, "y:", y)
+                        console.log("Vehicle width:", vwidth, "height:", vheight)
+                    }
             }
-            Vehicle{
-                x:100;y:100
-                type:"car"
-                vehicleColor: "red"
-                speed:70
-            }
+
 
             TrafficLight {
                 x:250 ; y:70
-                state:"red"
+                state:"green"
             }
+
 
            /* Text {
                 anchors.centerIn: parent

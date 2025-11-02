@@ -9,7 +9,6 @@ PositionCalculator::PositionCalculator(QObject * parent)
 
 void PositionCalculator::calculateTileSize(double containerWidth, double containerHeight, int gridTileX, int gridTileY)
 {
-
     double maxTileWidthFromWidth = (containerWidth * 0.9) / gridTileX;
     double maxTileWidthFromHeight = (containerHeight * 0.8) /gridTileY * 2;
 
@@ -17,10 +16,15 @@ void PositionCalculator::calculateTileSize(double containerWidth, double contain
     m_tileHeight = m_tileWidth/2;
 
     emit tileSizeChanged();
-
 }
 
+void PositionCalculator::calculateOrigin(double containerWidth,double containerHeight){
 
+    m_origin.setX(containerWidth/2);
+    m_origin.setY(containerHeight-containerHeight* 0.8);
+
+    emit originChanged();
+}
 
 QPointF PositionCalculator::screenToIso(QPoint screen) const
 {
@@ -37,8 +41,9 @@ QPointF PositionCalculator::screenToIso(QPoint screen) const
 
 QPoint PositionCalculator::isoToScreen(QPointF isometric) const
 {
-    int screenX=static_cast<int>((isometric.x()-isometric.y()) * (m_tileWidth/2));
-    int screenY=static_cast<int>((isometric.x()+isometric.y()) * (m_tileHeight/2));
+    int screenX=static_cast<int>((isometric.x()-isometric.y()) * (m_tileWidth/2.0));
+    int screenY=static_cast<int>((isometric.x()+isometric.y()) * (m_tileHeight/2.0));
+
 
     return QPoint(screenX,screenY);
 }
