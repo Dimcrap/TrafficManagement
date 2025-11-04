@@ -14,10 +14,20 @@ Window {
 
     RowLayout{
         anchors.fill:  parent
+        spacing:0
 
     Area{
-        anchors.fill:  parent
+        id:mainArea
+        Layout.fillHeight: true
+        Layout.fillWidth: true
+        Layout.preferredWidth: 4
+    }
 
+    ControlPanel{
+        id: controlpanel
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: 1
     }
 
     }

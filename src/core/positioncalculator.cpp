@@ -1,9 +1,11 @@
 #include "positioncalculator.h"
 #include <cmath>
+#include <QDebug>
 
 PositionCalculator::PositionCalculator(QObject * parent)
     :QObject(parent),m_tileWidth(64.0),
-    m_tileHeight(32.0)
+    m_tileHeight(32.0),
+    m_origin(0,0)
 {
 }
 
@@ -20,8 +22,8 @@ void PositionCalculator::calculateTileSize(double containerWidth, double contain
 
 void PositionCalculator::calculateOrigin(double containerWidth,double containerHeight){
 
-    m_origin.setX(containerWidth/2);
-    m_origin.setY(containerHeight-containerHeight* 0.8);
+    m_origin.setX(containerWidth/2-(m_tileWidth/2));
+    m_origin.setY(containerHeight-containerHeight* 0.98);
 
     emit originChanged();
 }
@@ -39,10 +41,12 @@ QPointF PositionCalculator::screenToIso(QPoint screen) const
 
 
 
-QPoint PositionCalculator::isoToScreen(QPointF isometric) const
+QPointF PositionCalculator::isoToScreen(QPointF isometric) const
 {
-    int screenX=static_cast<int>((isometric.x()-isometric.y()) * (m_tileWidth/2.0));
-    int screenY=static_cast<int>((isometric.x()+isometric.y()) * (m_tileHeight/2.0));
+    double screenX=(isometric.x() * (m_tileWidth/2.0)) -
+                  (isometric.y()* (m_tileWidth /2.0))+m_origin.x();
+    double screenY=(isometric.x() * m_tileHeight/2.0) +
+                  (isometric.y() * (m_tileHeight /2.0))+m_origin.y();
 
 
     return QPoint(screenX,screenY);
@@ -58,6 +62,6 @@ void PositionCalculator::setTileSize(double width, double height)
 {
     m_tileWidth=width;
     m_tileHeight=height;
-    emit tileSizeChanged();
 
+    emit tileSizeChanged();
 }

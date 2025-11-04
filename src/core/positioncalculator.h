@@ -25,7 +25,7 @@ public:
     PositionCalculator(QObject * parent =nullptr);
 
     Q_INVOKABLE QPointF screenToIso(QPoint screen) const;
-    Q_INVOKABLE QPoint isoToScreen(QPointF isometric) const;
+    Q_INVOKABLE QPointF isoToScreen(QPointF isometric) const;
     Q_INVOKABLE QPointF snapToGrid(double isoX, double isoY) const;
 
     Q_INVOKABLE void calculateTileSize(double containerWidth, double containerHeight, int gridTileX, int gridTileY);
@@ -36,7 +36,7 @@ public:
     QPoint getOriginPoint() const{ return m_origin; }
 
 signals:
- void  tileSizeChanged();
+    void  tileSizeChanged();
     void  originChanged();
 
 };
