@@ -10,8 +10,7 @@ Window {
     height: 480
     visible: true
     title: qsTr("Traffic Management")
-
-
+    color: "#2c3e50"
     RowLayout{
         anchors.fill:  parent
         spacing:0

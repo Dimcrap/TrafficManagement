@@ -8,7 +8,6 @@ Item {
 
     id:root
 
-
     Positioncalculator{
         id :poscalculator
     }
@@ -39,25 +38,29 @@ Item {
             id:simulationArea
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color:"#e8e8e8"
-
+            gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#ffff99" }
+                        GradientStop { position: 1.0; color: "#999900" }
+                    }
 
             TrafficLight {
-                id:trafficlight
-                state:"green"
+                id:trafficlight1
+                state:"red"
+                width: root.width * 0.07
+                height: root.height * 0.20
 
-                property point screenPos: Qt.point(0, 0)
+                property point screenPos: Qt.point(0, 2)
 
                 function updatePosition() {
-                       screenPos = poscalculator.isoToScreen(Qt.point(0,0))
-                       x = screenPos.x
-                       y = screenPos.y
+                       screenPos = poscalculator.isoToScreen(Qt.point(0,2))
+                       x = screenPos.x-root.width * 0.05
+                       y = screenPos.y+root.height * 0.03
                    }
 
                   Component.onCompleted: {
-                      screenPos = poscalculator.isoToScreen(Qt.point(0,0))
-                      x = screenPos.x
-                      y = screenPos.y
+                      screenPos = poscalculator.isoToScreen(Qt.point(0,2))
+                      x = screenPos.x -root.width * 0.05
+                      y = screenPos.y +root.height * 0.03
                       console.log("Initial position - x:", x, "y:", y)
                   }
 
@@ -65,10 +68,10 @@ Item {
                           target: root
 
                           function onWidthChanged() {
-                             trafficlight.updatePosition()
+                             trafficlight1.updatePosition()
                             }
                           function onHeightChanged(){
-                              trafficlight.updatePosition()
+                              trafficlight1.updatePosition()
                           }
 
                       }
@@ -78,23 +81,79 @@ Item {
 
 
 
-
-/*
             TrafficLight {
-                state:"green"
+                id:trafficlight2
+                state:"red"
+                width: root.width * 0.07
+                height: root.height * 0.20
+
+
+                property point screenPos: Qt.point(2, 0)
+
+                function updatePosition() {
+                       screenPos = poscalculator.isoToScreen(Qt.point(2,0))
+                       x = screenPos.x+root.width * 0.04
+                       y = screenPos.y +root.height * 0.03
+                   }
+
+                  Component.onCompleted: {
+                      screenPos = poscalculator.isoToScreen(Qt.point(2,0))
+                      x = screenPos.x +root.width * 0.04
+                      y = screenPos.y +root.height * 0.03
+                      console.log("Initial position - x:", x, "y:", y)
+                  }
+
+                  Connections {
+                          target: root
+
+                          function onWidthChanged() {
+                             trafficlight2.updatePosition()
+                            }
+                          function onHeightChanged(){
+                              trafficlight2.updatePosition()
+                          }
+
+                      }
+
+            }
+
+            Image {
+                id: arrow1
+                source: "qrc:/images/twoarrow.png"
 
                 property point screenPos: {
 
                         var _ = poscalculator.tileWidth;
                         var __ = poscalculator.origin;
-                        return poscalculator.isoToScreen(Qt.point(2,0));
+                        return poscalculator.isoToScreen(Qt.point(0,5));
                     }
 
-                x:screenPos.x-(root.width * 0.15)//poscalculator.isoToScreen(Qt.point(5,5)).x
-                y:screenPos.y-(root.height * 0.43)//poscalculator.isoToScreen(Qt.point(5,5)).y
+                x:screenPos.x//-(root.width * 0.15)
+                y:screenPos.y-(root.height * 0.02)
 
-            }*/
+                width: root.width * 0.07
+                height:root.height * 0.1
+                rotation: -55
+            }
 
+            Image {
+                id: arrow2
+                source: "qrc:/images/twoarrow.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(5,0));
+                    }
+
+                x:screenPos.x-(root.width * 0.01)
+                y:screenPos.y -(root.height * 0.02)
+
+                width: root.width * 0.07
+                height:root.height * 0.1
+                rotation: 55
+            }
             Image {
                 id: mainroad
                 source: "qrc:/images/structures/mainroad.png"
@@ -232,6 +291,141 @@ Item {
 
             }
 
+
+            Image {
+                id:tree1
+                source: "qrc:/images/greenbelt/tree5.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(8,9));
+                    }
+
+                x:screenPos.x + root.width * 0.02
+                y:screenPos.y + (root.height * 0.14)+poscalculator.tileHeight *0.6//+ root.width * 0.01
+
+                width: poscalculator.tileWidth * 0.1+ poscalculator.tileWidth
+                height: poscalculator.tileHeight+ poscalculator.tileHeight
+            }
+
+            Image {
+                id: tower
+                source: "qrc:/images/structures/Tower.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(12,12));
+                    }
+
+                x:screenPos.x - root.width * 0.02
+                y:screenPos.y + (root.height * 0.03)
+
+                width:  poscalculator.tileWidth //+ poscalculator.tileWidth * 0.1
+                height: poscalculator.tileHeight *2 + poscalculator.tileHeight * 0.5
+            }
+
+            Image {
+                id: grass3
+                source: "qrc:/images/greenbelt/grass.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(14,12));
+                    }
+
+                x:screenPos.x //- root.width * 0.05
+                y:screenPos.y //+ (root.height * 0.17)
+
+                width: poscalculator.tileWidth * 0.1+ poscalculator.tileWidth
+                height: poscalculator.tileHeight+ poscalculator.tileHeight
+
+            }
+
+
+            Image {
+                id: grass4
+                source: "qrc:/images/greenbelt/grass.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(12,15));
+                    }
+
+                x:screenPos.x //- root.width * 0.05
+                y:screenPos.y //+ (root.height * 0.17)
+
+                width: poscalculator.tileWidth * 0.1+ poscalculator.tileWidth
+                height: poscalculator.tileHeight+ poscalculator.tileHeight
+
+            }
+
+
+            Image {
+                id: grass
+                source: "qrc:/images/greenbelt/grass2.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(13,15));
+                    }
+
+                x:screenPos.x + root.width * 0.02
+                y:screenPos.y //+ (root.height * 0.17)
+
+                width:  poscalculator.tileWidth
+                height: poscalculator.tileHeight+ poscalculator.tileHeight * 0.5
+
+            }
+
+
+            Image {
+                id: grass2
+                source: "qrc:/images/greenbelt/grass2.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(15,13));
+                    }
+
+                x:screenPos.x - root.width * 0.03
+                y:screenPos.y //+ (root.height * 0.17)
+
+                width:  poscalculator.tileWidth
+                height: poscalculator.tileHeight+ poscalculator.tileHeight * 0.5
+            }
+
+            Image {
+                id: tree2
+                source: "qrc:/images/greenbelt/tree3.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(14,14));
+                    }
+
+                x:screenPos.x - root.width * 0.02
+                y:screenPos.y //+ (root.height * 0.17)
+
+                width: poscalculator.tileWidth * 0.1+ poscalculator.tileWidth
+                height: poscalculator.tileHeight *2 + poscalculator.tileHeight * 0.09
+
+            }
+
+
 /*
             Vehicle{
                 id:vehicleInstance
@@ -256,11 +450,6 @@ Item {
                     }
             }
 
-
-            TrafficLight {
-                x:250 ; y:70
-                state:"green"
-            }
 */
 
            /* Text {

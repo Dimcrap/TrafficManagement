@@ -3,16 +3,14 @@ import QtQuick.Shapes
 
 Item {
     id: container
-    width: 46
-    height: 84
     property string state: "red"
 
 
 
     Rectangle {
         id:trafficLight
-        width: 45
-        height: 80
+        width: container.width //- container.width * 0.02 //45
+        height: container.height //- container.height * 0.01 //80
         color:"#2a2a2a"
         radius: 10
 
@@ -72,20 +70,20 @@ Item {
     }
 
     Column{
-        spacing: 6
+        spacing: container.height*0.06
         anchors.centerIn: parent
 
 
         Rectangle{
             id:redLight
-            width: 20;height: 20;radius: 20
+            width: container.width * 0.5; height: container.width * 0.5 ;radius: container.width * 0.5//width: 20;height: 20;radius: 20
             color: container.state === "red" ? "red" : "#400"
             border {color: "#200" ; width: 2}
 
             Rectangle{
                 width: parent.width *0.3;height: parent.height * 0.3
                 radius: width /2
-                anchors {top: parent.top ; right: parent.right; margins: 5 }
+                anchors {top: parent.top ; right: parent.right; margins: container.height * 0.03 }
                 color: container.state === "red" ? "red" : "#400"
                 opacity: 0.8
 
@@ -94,14 +92,14 @@ Item {
 
         Rectangle{
             id : yellowLight
-            width: 20; height: 20; radius: 25;
+            width: container.width * 0.5;height: container.width * 0.5 ;radius: container.width * 0.5//width: 20; height: 20; radius: 25;
             color:container.state==="yellow"? "yellow" : "#440"
             border {color : "#220"; width: 2}
 
             Rectangle{
             width: parent.width * 0.3 ; height: parent.height * 0.3
             radius: width/2
-            anchors {top:parent.top;right:parent.right;margins: 5}
+            anchors {top:parent.top;right:parent.right;margins: container.height * 0.03}
             color: container.state ==="yellow" ? "#ffffaa" :"#666622"
             opacity: 0.8
             }
@@ -109,14 +107,14 @@ Item {
 
         Rectangle{
             id:greenLight
-            width:20;height:20;radius:25;
+            width: container.width * 0.5;height: container.width * 0.5 ;radius: container.width * 0.5//width:20;height:20;radius:25;
             color:container.state ==="green" ? "green" : "#040"
             border {color: "#020";width:2}
 
             Rectangle{
                 width:parent.width *0.3 ;height: parent.height * 0.3
                 radius: width/2
-                anchors {top:parent.top ; right: parent.right; margins: 5}
+                anchors {top:parent.top ; right: parent.right; margins: container.height * 0.03}
                 color: container.state ==="green" ?"#aaffaa" : "#226622"
                 opacity: 0.8
                 }
