@@ -4,9 +4,12 @@ import QtQuick.Layouts
 import TrafficManagement 1.0
 import MyApp.posCalculator
 
+
+
 Item {
 
     id:root
+
 
     Positioncalculator{
         id :poscalculator
@@ -25,7 +28,7 @@ Item {
     }
 
     function updateCalculation(){
-        poscalculator.calculateOrigin(root.width,root.height)
+        poscalculator.calculateOrigin(root.width,root.height);
         poscalculator.calculateTileSize(root.width,root.height,10,10);
     }
 
@@ -61,7 +64,7 @@ Item {
                       screenPos = poscalculator.isoToScreen(Qt.point(0,2))
                       x = screenPos.x -root.width * 0.05
                       y = screenPos.y +root.height * 0.03
-                      console.log("Initial position - x:", x, "y:", y)
+                     // console.log("Initial position - x:", x, "y:", y)
                   }
 
                   Connections {
@@ -83,7 +86,7 @@ Item {
 
             TrafficLight {
                 id:trafficlight2
-                state:"red"
+                state:"green"
                 width: root.width * 0.07
                 height: root.height * 0.20
 
@@ -116,6 +119,42 @@ Item {
                       }
 
             }
+
+            Timecounter{
+                id:timecounter
+                width: root.width * 0.09
+                height: root.height *  0.12
+
+                property point screenPos: Qt.point(0, 2)
+
+                function updatePosition() {
+                       screenPos = poscalculator.isoToScreen(Qt.point(0,0))
+                       x = screenPos.x-root.width * 0.01
+                       y = screenPos.y+root.height * 0.03
+                   }
+
+                  Component.onCompleted: {
+                      screenPos = poscalculator.isoToScreen(Qt.point(0,0))
+                      x = screenPos.x -root.width * 0.01
+                      y = screenPos.y +root.height * 0.03
+                  }
+
+                  Connections {
+                          target: root
+
+                          function onWidthChanged() {
+                             timecounter.updatePosition()
+                            }
+                          function onHeightChanged(){
+                              timecounter.updatePosition()
+                          }
+
+                      }
+
+
+            }
+
+
 
             Image {
                 id: arrow1
@@ -300,11 +339,11 @@ Item {
 
                         var _ = poscalculator.tileWidth;
                         var __ = poscalculator.origin;
-                        return poscalculator.isoToScreen(Qt.point(8,9));
+                        return poscalculator.isoToScreen(Qt.point(10,10));
                     }
 
-                x:screenPos.x + root.width * 0.02
-                y:screenPos.y + (root.height * 0.14)+poscalculator.tileHeight *0.6//+ root.width * 0.01
+                x:screenPos.x - root.width * 0.02
+                y:screenPos.y + root.height * 0.16 - poscalculator.tileWidth +18 //(root.height * 0.14)+poscalculator.tileHeight *0.6//+ root.width * 0.01
 
                 width: poscalculator.tileWidth * 0.1+ poscalculator.tileWidth
                 height: poscalculator.tileHeight+ poscalculator.tileHeight
@@ -318,11 +357,11 @@ Item {
 
                         var _ = poscalculator.tileWidth;
                         var __ = poscalculator.origin;
-                        return poscalculator.isoToScreen(Qt.point(12,12));
+                        return poscalculator.isoToScreen(Qt.point(11,11));
                     }
 
                 x:screenPos.x - root.width * 0.02
-                y:screenPos.y + (root.height * 0.03)
+                y:screenPos.y + root.height * 0.16 - poscalculator.tileWidth * 1.5 +35//screenPos.y + (root.height * 0.03)
 
                 width:  poscalculator.tileWidth //+ poscalculator.tileWidth * 0.1
                 height: poscalculator.tileHeight *2 + poscalculator.tileHeight * 0.5
@@ -336,17 +375,16 @@ Item {
 
                         var _ = poscalculator.tileWidth;
                         var __ = poscalculator.origin;
-                        return poscalculator.isoToScreen(Qt.point(14,12));
+                        return poscalculator.isoToScreen(Qt.point(14,13));
                     }
 
-                x:screenPos.x //- root.width * 0.05
-                y:screenPos.y //+ (root.height * 0.17)
+                rotation: 3
+                x:screenPos.x - root.width * 0.15
+                y:screenPos.y + (root.height * 0.055)-poscalculator.tileWidth * 0.5
 
                 width: poscalculator.tileWidth * 0.1+ poscalculator.tileWidth
                 height: poscalculator.tileHeight+ poscalculator.tileHeight
-
             }
-
 
             Image {
                 id: grass4
@@ -356,15 +394,14 @@ Item {
 
                         var _ = poscalculator.tileWidth;
                         var __ = poscalculator.origin;
-                        return poscalculator.isoToScreen(Qt.point(12,15));
+                        return poscalculator.isoToScreen(Qt.point(12,11));
                     }
 
-                x:screenPos.x //- root.width * 0.05
-                y:screenPos.y //+ (root.height * 0.17)
+                x:screenPos.x + root.width * 0.02 + root.width * 0.005
+                y:screenPos.y + (root.height * 0.01)+ (poscalculator.tileWidth * 0.87 )//root.height * 0.003
 
                 width: poscalculator.tileWidth * 0.1+ poscalculator.tileWidth
                 height: poscalculator.tileHeight+ poscalculator.tileHeight
-
             }
 
 
@@ -379,12 +416,12 @@ Item {
                         return poscalculator.isoToScreen(Qt.point(13,15));
                     }
 
-                x:screenPos.x + root.width * 0.02
-                y:screenPos.y //+ (root.height * 0.17)
+                rotation: -3
+                x:screenPos.x + root.width * 0.02+root.width *0.010
+                y:screenPos.y + (root.height * 0.009)//+root.height * 0.001
 
                 width:  poscalculator.tileWidth
                 height: poscalculator.tileHeight+ poscalculator.tileHeight * 0.5
-
             }
 
 
@@ -399,8 +436,9 @@ Item {
                         return poscalculator.isoToScreen(Qt.point(15,13));
                     }
 
-                x:screenPos.x - root.width * 0.03
-                y:screenPos.y //+ (root.height * 0.17)
+                rotation: 5
+                x:screenPos.x - root.width * 0.056 //+root.width * 0.004
+                y:screenPos.y + (root.height * 0.008)
 
                 width:  poscalculator.tileWidth
                 height: poscalculator.tileHeight+ poscalculator.tileHeight * 0.5
@@ -426,6 +464,25 @@ Item {
             }
 
 
+            Image {
+                id: rightarea
+                source: "qrc:/images/rightArea.png"
+
+                property point screenPos: {
+
+                        var _ = poscalculator.tileWidth;
+                        var __ = poscalculator.origin;
+                        return poscalculator.isoToScreen(Qt.point(8,3));
+                    }
+
+                rotation:1
+                x:screenPos.x - root.width * 0.01
+                y:screenPos.y + (root.height * 0.08)+3.5
+
+                width: root.width * 0.30//+ poscalculator.tileWidth
+                height: poscalculator.tileHeight *2 + root.height * 0.20// poscalculator.tileHeight * 0.09
+
+            }
 /*
             Vehicle{
                 id:vehicleInstance

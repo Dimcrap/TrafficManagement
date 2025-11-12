@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QResource>
 #include <QDir>
-
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 
 
     QGuiApplication app(argc, argv);
+    app.setWindowIcon(QIcon(":/images/trafficIcon.png"));
     QQmlApplicationEngine engine;
 
     qmlRegisterType<ControlPanelHandler>("ControlPanelHandler",1,0,"ControlPanelHandler");

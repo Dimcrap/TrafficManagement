@@ -46,6 +46,8 @@ qt_add_qml_module(appTrafficManagement
         RESOURCES images/structures/mainroad.png
         RESOURCES images/twoarrow.png
         QML_FILES qml/components/Timecounter.qml
+        RESOURCES images/rightArea.png
+        RESOURCES images/trafficIcon.png
 
 )
 
