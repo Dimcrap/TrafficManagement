@@ -42,10 +42,10 @@ qt_add_qml_module(appTrafficManagement
         qml/components/Vehicle.qml
         qml/pages/ControlPanel.qml
         qml/simulationEngine.qml
+        qml/components/Timecounter.qml
         RESOURCES images/isocars/Hleft1.png images/isocars/Hleft2.png images/isocars/Hleft3.png images/isocars/Hleft4.png images/isocars/Hright1.png images/isocars/Hright2.png images/isocars/Hright3.png images/isocars/Hright4.png images/isocars/Vleft1.png images/isocars/Vleft2.png images/isocars/Vleft3.png images/isocars/Vleft4.png images/isocars/Vright1.png images/isocars/Vright2.png images/isocars/Vright3.png images/isocars/Vright4.png
         RESOURCES images/structures/mainroad.png
         RESOURCES images/twoarrow.png
-        QML_FILES qml/components/Timecounter.qml
         RESOURCES images/rightArea.png
         RESOURCES images/trafficIcon.png
 

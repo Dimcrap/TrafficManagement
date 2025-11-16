@@ -10,7 +10,6 @@ Item {
 
     id:root
 
-
     Positioncalculator{
         id :poscalculator
     }
@@ -83,7 +82,6 @@ Item {
             }
 
 
-
             TrafficLight {
                 id:trafficlight2
                 state:"green"
@@ -119,41 +117,6 @@ Item {
                       }
 
             }
-
-            Timecounter{
-                id:timecounter
-                width: root.width * 0.09
-                height: root.height *  0.12
-
-                property point screenPos: Qt.point(0, 2)
-
-                function updatePosition() {
-                       screenPos = poscalculator.isoToScreen(Qt.point(0,0))
-                       x = screenPos.x-root.width * 0.01
-                       y = screenPos.y+root.height * 0.03
-                   }
-
-                  Component.onCompleted: {
-                      screenPos = poscalculator.isoToScreen(Qt.point(0,0))
-                      x = screenPos.x -root.width * 0.01
-                      y = screenPos.y +root.height * 0.03
-                  }
-
-                  Connections {
-                          target: root
-
-                          function onWidthChanged() {
-                             timecounter.updatePosition()
-                            }
-                          function onHeightChanged(){
-                              timecounter.updatePosition()
-                          }
-
-                      }
-
-
-            }
-
 
 
             Image {
@@ -193,6 +156,7 @@ Item {
                 height:root.height * 0.1
                 rotation: 55
             }
+
             Image {
                 id: mainroad
                 source: "qrc:/images/structures/mainroad.png"
@@ -251,8 +215,6 @@ Item {
                 width: poscalculator.tileWidth * 0.1+ poscalculator.tileWidth
                 height: poscalculator.tileHeight+ poscalculator.tileHeight
             }
-
-
 
             Image {
                 id: house3
@@ -330,7 +292,6 @@ Item {
 
             }
 
-
             Image {
                 id:tree1
                 source: "qrc:/images/greenbelt/tree5.png"
@@ -404,7 +365,6 @@ Item {
                 height: poscalculator.tileHeight+ poscalculator.tileHeight
             }
 
-
             Image {
                 id: grass
                 source: "qrc:/images/greenbelt/grass2.png"
@@ -423,7 +383,6 @@ Item {
                 width:  poscalculator.tileWidth
                 height: poscalculator.tileHeight+ poscalculator.tileHeight * 0.5
             }
-
 
             Image {
                 id: grass2
@@ -462,7 +421,6 @@ Item {
                 height: poscalculator.tileHeight *2 + poscalculator.tileHeight * 0.09
 
             }
-
 
             Image {
                 id: rightarea

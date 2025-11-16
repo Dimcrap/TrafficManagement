@@ -31,14 +31,18 @@ Rectangle {
             text: "Start Simulatin"
             Layout.fillWidth: true
             onClicked: {
-                console.log("Simulation started!")
+                //console.log("Simulation started!")
+                handler.simulationCommand(true);
             }
         }
 
         Button{
             text:"Stop Simulation"
             Layout.fillWidth: true
-            onClicked: console.log("Simulation stoped!")
+            onClicked:{
+               console.log("Simulation stoped!")
+                handler.simulationCommand(false);
+            }
         }
 
         Slider{
@@ -62,7 +66,6 @@ Rectangle {
             model: ["Low Traffic","Medium Traffic","High Traffic"]
             //onCurrentTextChanged:handler.onTrafficState(currentText)
             onCurrentTextChanged: console.log("Traffic density:",currentText)
-
         }
 
     }

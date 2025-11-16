@@ -5,7 +5,7 @@ trafficcontroller.cpp
 vehiclemodel.h
 trafficcontroller.h
 
-controlpanelhandler.h controlpanelhandler.cpp
+controlpanelhandler.h
 positioncalculator.h positioncalculator.cpp
 primaryisoscene.h primaryisoscene.cpp
 primaryisoscene.h primaryisoscene.cpp

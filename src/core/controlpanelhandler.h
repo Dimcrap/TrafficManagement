@@ -8,10 +8,12 @@ class ControlPanelHandler:public QObject
     Q_OBJECT
 
 public:
-    ControlPanelHandler();
-    simulationCommand(bool command);
-    onSpeedSlider(int value);
-    onTrafficState(QString state);
+
+
+signals:
+    void simulationCommand(bool command);
+    void onSpeedSlider(int value);
+    void onTrafficState(QString state);
 
 };
 

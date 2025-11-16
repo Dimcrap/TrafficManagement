@@ -10,8 +10,6 @@
 int main(int argc, char *argv[])
 {
 
-
-
     QGuiApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/images/trafficIcon.png"));
     QQmlApplicationEngine engine;
@@ -28,11 +26,7 @@ int main(int argc, char *argv[])
 
     PositionCalculator positioncalculator;
 
-
-
-  engine.loadFromModule("TrafficManagement", "Main");
-
-
+    engine.loadFromModule("TrafficManagement", "Main");
 
   QResource resource(":/images/greenbelt/tree1.png");
   if (resource.isValid()) {
