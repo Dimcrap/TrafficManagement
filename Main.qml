@@ -19,14 +19,17 @@ Window {
 
     Component.onCompleted:{
         updateCalculation();
+        simEngine.diployMachine(45,"right")
     }
 
     onWidthChanged:{
         updateCalculation();
+        //simEngine.diployMachine(45,"right")
     }
 
     onHeightChanged:{
         updateCalculation();
+        //simEngine.diployMachine(45,"right")
     }
 
     function updateCalculation(){
@@ -78,6 +81,13 @@ Window {
                       }
 
                   }
+
+        }
+
+        SimulationEngine{
+            id:simEngine
+            areawidth:mainArea.width
+            arealength:mainArea.height
 
         }
 

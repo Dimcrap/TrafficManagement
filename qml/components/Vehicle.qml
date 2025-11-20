@@ -31,7 +31,6 @@ Item {
             return "qrc:/images/isocars/Vleft"+randomNum+".png"
         }
 
-
     }
 
     width: vwidth
