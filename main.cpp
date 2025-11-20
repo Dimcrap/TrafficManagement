@@ -6,15 +6,18 @@
 #include <QResource>
 #include <QDir>
 #include <QIcon>
+#include <QQmlContext>
+#include <QQmlEngine>
 
 int main(int argc, char *argv[])
 {
 
     QGuiApplication app(argc, argv);
     app.setWindowIcon(QIcon(":/images/trafficIcon.png"));
+    ControlPanelHandler *handler=new ControlPanelHandler();
     QQmlApplicationEngine engine;
 
-    qmlRegisterType<ControlPanelHandler>("ControlPanelHandler",1,0,"ControlPanelHandler");
+    engine.rootContext()->setContextProperty("controlPanelHandler",handler);
     qmlRegisterType<PositionCalculator>("MyApp.posCalculator",1,0,"Positioncalculator");
 
     QObject::connect(

@@ -3,7 +3,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import TrafficManagement 1.0
 import MyApp.posCalculator
-import ControlPanelHandler
 
 Window {
 
@@ -16,10 +15,6 @@ Window {
 
     Positioncalculator{
         id :poscalculator
-    }
-
-    ControlPanelHandler{
-        id:handler
     }
 
     Component.onCompleted:{
@@ -49,13 +44,12 @@ Window {
         Layout.preferredWidth: 4
 
         Timecounter{
-            runspeed:80
-            //trafficstage: "low"
-            //running: true
-            //currCount:0
-            //targetCount:99
-
             id:timecounter
+            runspeed:50
+            trafficstage: "low"
+            running: false
+            currCount:0
+            targetCount:60
             width: mainwindow.width * 0.09
             height: mainwindow.height *  0.12
 
@@ -84,6 +78,7 @@ Window {
                       }
 
                   }
+
         }
 
     }
@@ -97,9 +92,13 @@ Window {
 
     }
     Connections{
-        target:handler
+        target:controlPanelHandler
         onSimulationCommand:function (command){
             console.log("simulation state:"+command)
+            timecounter.running=command;
+        }
+        onSpeedSlider:function (value){
+            timecounter.runspeed=value;
         }
 
         //onSpeedSlider(int value);
