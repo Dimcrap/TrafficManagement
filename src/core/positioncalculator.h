@@ -27,10 +27,11 @@ public:
     Q_INVOKABLE QPointF screenToIso(QPoint screen) const;
     Q_INVOKABLE QPointF isoToScreen(QPointF isometric) const;
     Q_INVOKABLE QPointF snapToGrid(double isoX, double isoY) const;
-
+    Q_INVOKABLE QPointF getnextMovement(std::string lane,int dir,QPoint currentPos)const;
     Q_INVOKABLE void calculateTileSize(double containerWidth, double containerHeight, int gridTileX, int gridTileY);
     Q_INVOKABLE void calculateOrigin(double containerWidth,double containerHeight);
     Q_INVOKABLE void setTileSize(double width, double height);
+
     double getTileWidth() const { return m_tileWidth; }
     double getTileHeight() const { return m_tileHeight; }
     QPoint getOriginPoint() const{ return m_origin; }

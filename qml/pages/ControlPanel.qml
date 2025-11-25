@@ -40,6 +40,14 @@ Rectangle {
             }
         }
 
+        Button{
+            text:"Reset"
+            Layout.fillWidth: true
+            onClicked:{
+                console.log("Reset button clicked")
+            }
+        }
+
         Slider{
             id:speedSlider
             Layout.fillWidth:true

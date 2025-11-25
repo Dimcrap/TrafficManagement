@@ -58,6 +58,11 @@ QPointF PositionCalculator::snapToGrid(double isoX, double isoY) const
     return QPointF(std::round(isoX),std::round(isoY));
 }
 
+QPointF PositionCalculator::getnextMovement(std::string lane, int dir, QPoint currentPos) const
+{
+
+}
+
 void PositionCalculator::setTileSize(double width, double height)
 {
     m_tileWidth=width;

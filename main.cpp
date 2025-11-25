@@ -2,12 +2,14 @@
 #include <QQmlApplicationEngine>
 #include "controlpanelhandler.h"
 #include "positioncalculator.h"
+#include "trafficcontroller.h"
 #include <QDebug>
 #include <QResource>
 #include <QDir>
 #include <QIcon>
 #include <QQmlContext>
 #include <QQmlEngine>
+
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +21,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("controlPanelHandler",handler);
     qmlRegisterType<PositionCalculator>("MyApp.posCalculator",1,0,"Positioncalculator");
+    qmlRegisterType<trafficcontroller>("Traffic.Ctrl",1,0,"TrafficController");
 
     QObject::connect(
         &engine,

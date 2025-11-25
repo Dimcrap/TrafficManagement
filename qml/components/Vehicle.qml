@@ -1,62 +1,78 @@
 import QtQuick 2.15
-
+import MyApp.posCalculator
+import Traffic.Ctrl
 
 Item {
+    id:root
+    property bool monving: true
+    property string line: "right"
+    property int direction: 45
+    property int speed: 50
 
-    id:vehicle
+    var currY,currX;
+    var ImagePath;
 
-
-    property string vDirection:"vertical"
-    property string vLine:"right"
-    property int vwidth:24
-    property int vheight:24
-    property real speed:1.7
-
-/*
-    Component.onCompleted: {
-         console.log("Vehicle properties:", vDirection, vLine, vwidth, vheight, speed)
-     }*/
-
-
-    function selectCar(direction,line){
-        var randomNum= Math.floor(Math.random() *4 )+1
-
-        if(direction==="vertical" && line==="right"){
-            return "qrc:/images/isocars/Vright"+randomNum+".png"
-        }else if(direction==="vertical" && line==="left"){
-            return "qrc:/images/isocars/Vleft"+randomNum+".png"
-        }else if(direction==="horizental" && line==="right"){
-            return "qrc:/images/isocars/Vright"+randomNum+".png"
-        }else{//direction==horizentical && line==left
-            return "qrc:/images/isocars/Vleft"+randomNum+".png"
-        }
-
+    Positioncalculator{
+        id:poscalculator
     }
 
-    width: vwidth
-    height: vheight
+    TrafficController{
+        id:trafficCtrl
+    }
+
+    function findImage(Vline,Vdirection){
+        var path=(Vdirection==-45)?"H":"V";
+        let random =trafficCtrl.randomNumber(1,4);//Math.floor(Math.random()*( 4-1 + 1)+1);
+        return path+4;
+    }
+
+
+    function setSpeed(newspeed){
+        speed=newspeed;
+    }
+
+    function findStartPos(lane,dir){
+        var ParentPoint=Qt.point(parent.width,parent.height);
+
+        if(lane=="right" && dir==45){
+            return Qt.point((parentPoint.x -parent.width * 0.085 ), (ParentPoint.y - parent.height 0.9));
+
+        }if(dir==45 && lane=="left"){
+
+        }if(dir==-45 && lane=="right"){
+
+        }else{
+
+        }
+    }
+
+    function updateVehiclePos(){
+        if(moving){
+        //var pos = poscalculator.getnextPosition(currX,currY);
+        x=pos.X;
+        y=pos.Y;
+        }
+    }
 
     Image {
-        id:carImg
-        source: selectCar(vDirection,vLine)
-        anchors.fill: parent
+    id:car
+    source: findImage(line,direction)
+    anchors.fill: parent
     }
 
-/*
-    Text {
-        anchors.centerIn: parent
-        text: qsTr(Math.round(speed)+" km/h" )
-        font.pixelSize: 8
-        color: "black"
-    }
-    Behavior on x{
-        NumberAnimation {duration:400} //easing.type: Easing.InOutQuad
+    Timer{
+        id:movmentTimer
+        interval: 13
+        running :false
+        repeat:true
+        onTriggered: {
+
+        }
     }
 
-    Behavior on y{
-        NumberAnimation {duration:400}
+    function move(){
+
     }
-*/
 
-
+    Component.onCompleted: updateVehiclePos()
 }

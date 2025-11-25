@@ -19,17 +19,14 @@ Window {
 
     Component.onCompleted:{
         updateCalculation();
-        simEngine.diployMachine(45,"right")
     }
 
     onWidthChanged:{
         updateCalculation();
-        //simEngine.diployMachine(45,"right")
     }
 
     onHeightChanged:{
         updateCalculation();
-        //simEngine.diployMachine(45,"right")
     }
 
     function updateCalculation(){
@@ -46,58 +43,58 @@ Window {
         Layout.fillWidth: true
         Layout.preferredWidth: 4
 
-        Timecounter{
-            id:timecounter
-            runspeed:50
-            trafficstage: "low"
-            running: false
-            currCount:0
-            targetCount:60
-            width: mainwindow.width * 0.09
-            height: mainwindow.height *  0.12
-
-            property point screenPos: Qt.point(0, 2)
-
-            function updatePosition() {
-                   screenPos = poscalculator.isoToScreen(Qt.point(0,0))
-                   x = screenPos.x-mainwindow.width * 0.115
-                   y = screenPos.y+mainwindow.height * 0.03
-               }
-
-              Component.onCompleted: {
-                  screenPos = poscalculator.isoToScreen(Qt.point(0,0))
-                  x = screenPos.x -mainwindow.width * 0.115
-                  y = screenPos.y +mainwindow.height * 0.03
-              }
-
-              Connections {
-                      target: mainwindow
-
-                      function onWidthChanged() {
-                         timecounter.updatePosition()
-                        }
-                      function onHeightChanged(){
-                          timecounter.updatePosition()
-                      }
-
-                  }
-
-        }
 
         SimulationEngine{
             id:simEngine
             areawidth:mainArea.width
-            arealength:mainArea.height
+            areaHeight:mainArea.height
 
+            Timecounter{
+                id:timecounter
+                runspeed:50
+                trafficstage: "low"
+                running: false
+                currCount:0
+                targetCount:60
+                width: mainwindow.width * 0.09
+                height: mainwindow.height *  0.12
+
+                property point screenPos: Qt.point(0, 2)
+
+                function updatePosition() {
+                       screenPos = poscalculator.isoToScreen(Qt.point(0,0))
+                       x = screenPos.x-mainwindow.width * 0.115
+                       y = screenPos.y+mainwindow.height * 0.03
+                   }
+
+                  Component.onCompleted: {
+                      screenPos = poscalculator.isoToScreen(Qt.point(0,0))
+                      x = screenPos.x -mainwindow.width * 0.115
+                      y = screenPos.y +mainwindow.height * 0.03
+                  }
+
+                  Connections {
+                          target: mainwindow
+
+                          function onWidthChanged() {
+                             timecounter.updatePosition()
+                            }
+                          function onHeightChanged(){
+                              timecounter.updatePosition()
+                          }
+
+                      }
+
+            }
         }
 
     }
 
     ControlPanel{
         id: controlpanel
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
-                    Layout.preferredWidth: 1
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            Layout.preferredWidth: 1
     }
 
     }
