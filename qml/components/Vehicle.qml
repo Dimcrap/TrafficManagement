@@ -9,8 +9,10 @@ Item {
     property int direction: 45
     property int speed: 50
 
-    var currY,currX;
-    var ImagePath;
+
+    property double  currY
+    property double currX
+
 
     Positioncalculator{
         id:poscalculator
@@ -20,9 +22,10 @@ Item {
         id:trafficCtrl
     }
 
+
     function findImage(Vline,Vdirection){
         var path=(Vdirection==-45)?"H":"V";
-        let random =trafficCtrl.randomNumber(1,4);//Math.floor(Math.random()*( 4-1 + 1)+1);
+        let random =trafficCtrl.randomNumber(1,4);
         return path+4;
     }
 
@@ -33,16 +36,14 @@ Item {
 
     function findStartPos(lane,dir){
         var ParentPoint=Qt.point(parent.width,parent.height);
-
         if(lane=="right" && dir==45){
-            return Qt.point((parentPoint.x -parent.width * 0.085 ), (ParentPoint.y - parent.height 0.9));
-
+            return Qt.point((ParentPoint.x * 0.115), (ParentPoint.y *0.8475));
         }if(dir==45 && lane=="left"){
-
+            return Qt.point((ParentPoint.x * 0.8 ), (ParentPoint.y *0.12));
         }if(dir==-45 && lane=="right"){
-
+            return Qt.point((ParentPoint.x * 0.05),(ParentPoint.y * 0.20));
         }else{
-
+            return Qt.point((ParentPoint.x * 0.87),(ParentPoint.y * 0.87))
         }
     }
 

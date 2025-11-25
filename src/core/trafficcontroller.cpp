@@ -1,13 +1,12 @@
 #include "trafficcontroller.h"
-#include  <random>
+#include  <QRandomGenerator>
 
 
-
-trafficcontroller::trafficcontroller():gen(rdevice),distrib(1,4) {
+trafficcontroller::trafficcontroller(){
 
 }
 
-int trafficcontroller::randomNumber(int min, max)
+int trafficcontroller::randomNumber(int min, int max)
 {
-    return distrib(gen);
+    return QRandomGenerator::global()->bounded(min,max+1);
 }

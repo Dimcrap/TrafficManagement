@@ -1,17 +1,13 @@
 #ifndef TRAFFICCONTROLLER_H
 #define TRAFFICCONTROLLER_H
-#include <random>
+#include <QObject>
 
-class trafficcontroller
+class trafficcontroller:public QObject
 {
-private :
-    std::random_device rdevice;
-    std::mt19937 gen;
-    std::uniform_int_distribution <> distrib;
+    Q_OBJECT
 public:
-
     trafficcontroller();
-    int randomNumber(int min,max);
+    Q_INVOKABLE int randomNumber(int min,int max);
 };
 
 #endif // TRAFFICCONTROLLER_H

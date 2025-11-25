@@ -45,79 +45,6 @@ Item {
                         GradientStop { position: 1.0; color: "#999900" }
                     }
 
-            TrafficLight {
-                id:trafficlight1
-                state:"red"
-                width: root.width * 0.07
-                height: root.height * 0.20
-
-                property point screenPos: Qt.point(0, 2)
-
-                function updatePosition() {
-                       screenPos = poscalculator.isoToScreen(Qt.point(0,2))
-                       x = screenPos.x-root.width * 0.05
-                       y = screenPos.y+root.height * 0.03
-                   }
-
-                  Component.onCompleted: {
-                      screenPos = poscalculator.isoToScreen(Qt.point(0,2))
-                      x = screenPos.x -root.width * 0.05
-                      y = screenPos.y +root.height * 0.03
-                     // console.log("Initial position - x:", x, "y:", y)
-                  }
-
-                  Connections {
-                          target: root
-
-                          function onWidthChanged() {
-                             trafficlight1.updatePosition()
-                            }
-                          function onHeightChanged(){
-                              trafficlight1.updatePosition()
-                          }
-
-                      }
-
-
-            }
-
-
-            TrafficLight {
-                id:trafficlight2
-                state:"green"
-                width: root.width * 0.07
-                height: root.height * 0.20
-
-
-                property point screenPos: Qt.point(2, 0)
-
-                function updatePosition() {
-                       screenPos = poscalculator.isoToScreen(Qt.point(2,0))
-                       x = screenPos.x+root.width * 0.04
-                       y = screenPos.y +root.height * 0.03
-                   }
-
-                  Component.onCompleted: {
-                      screenPos = poscalculator.isoToScreen(Qt.point(2,0))
-                      x = screenPos.x +root.width * 0.04
-                      y = screenPos.y +root.height * 0.03
-                      console.log("Initial position - x:", x, "y:", y)
-                  }
-
-                  Connections {
-                          target: root
-
-                          function onWidthChanged() {
-                             trafficlight2.updatePosition()
-                            }
-                          function onHeightChanged(){
-                              trafficlight2.updatePosition()
-                          }
-
-                      }
-
-            }
-
 
             Image {
                 id: arrow1
@@ -441,31 +368,6 @@ Item {
                 height: poscalculator.tileHeight *2 + root.height * 0.20// poscalculator.tileHeight * 0.09
 
             }
-/*
-            Vehicle{
-                id:vehicleInstance
-                vDirection :"vertical"
-                vLine:"right"
-                vwidth: poscalculator.tileWidth * 0.6
-                vheight: poscalculator.tileHeight
-                speed:75
-
-               // x:poscalculator.isoToScreen(Qt.point(5,6)).x
-                //y:poscalculator.isoToScreen(Qt.point(5,6)).y
-
-                Component.onCompleted: {
-                    x=poscalculator.isoToScreen(Qt.point(5,6)).x
-                    y=poscalculator.isoToScreen(Qt.point(5,6)).y
-                        console.log("=== Vehicle Debug ===")
-                        console.log("tileWidth:", poscalculator.tileWidth)
-                        console.log("tileHeight:", poscalculator.tileHeight)
-                        console.log("Point result:", poscalculator.isoToScreen(Qt.point(5,6)))
-                        console.log("Vehicle x:", x, "y:", y)
-                        console.log("Vehicle width:", vwidth, "height:", vheight)
-                    }
-            }
-
-*/
 
            /* Text {
                 anchors.centerIn: parent

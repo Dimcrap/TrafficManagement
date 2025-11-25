@@ -5,8 +5,6 @@ Item {
     id: container
     property string state: "red"
 
-
-
     Rectangle {
         id:trafficLight
         width: container.width //- container.width * 0.02 //45

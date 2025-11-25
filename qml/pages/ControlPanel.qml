@@ -12,7 +12,6 @@ Rectangle {
     ColumnLayout{
         anchors.fill: parent
         anchors.margins: 10
-
         spacing: 10
 
         Text {
@@ -35,7 +34,6 @@ Rectangle {
             text:"Stop Simulation"
             Layout.fillWidth: true
             onClicked:{
-               console.log("Simulation stoped!")
                 controlPanelHandler.setCommand(false);
             }
         }
@@ -45,6 +43,7 @@ Rectangle {
             Layout.fillWidth: true
             onClicked:{
                 console.log("Reset button clicked")
+                controlPanelHandler.resetEmiter();
             }
         }
 
