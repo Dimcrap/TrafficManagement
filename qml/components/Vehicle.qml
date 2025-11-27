@@ -4,7 +4,7 @@ import Traffic.Ctrl
 
 Item {
     id:root
-    property bool monving: true
+    property bool monving: false
     property string line: "right"
     property int direction: 45
     property int speed: 50
@@ -49,9 +49,8 @@ Item {
 
     function updateVehiclePos(){
         if(moving){
-        //var pos = poscalculator.getnextPosition(currX,currY);
-        x=pos.X;
-        y=pos.Y;
+        x=currX;
+        y=currY;
         }
     }
 
@@ -67,13 +66,33 @@ Item {
         running :false
         repeat:true
         onTriggered: {
-
+            var pos =poscalculator.getnextMovement(currX,currY);
+            if(pos.x==-1 || pos.y==-1){
+                var restartPos=findStartPos(root.line,root.direction);
+            }else{
+                currX=pos.x;
+                currY=pos.y;
+            }
+            updateVehiclePos();
         }
     }
 
-    function move(){
-
+    function movement(command){
+        if(command==true){
+            moving=true;
+            movmentTimer.start();
+        }else{
+            moving=false;
+            movmentTimer.stop();
+        }
     }
 
-    Component.onCompleted: updateVehiclePos()
+    Component.onCompleted: {
+        var pos =findStartPos(root.line,root.direction);
+        currX=pos.x;
+        currY=pos.y;
+        updateVehiclePos();
+    }
+
+
 }

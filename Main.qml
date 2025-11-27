@@ -47,13 +47,14 @@ Window {
         SimulationEngine{
             id:simEngine
             executing:false
-            areawidth:mainArea.width
-            areaHeight:mainArea.height
+            anchors.fill: mainArea
+            //areawidth:mainArea.width
+            //areaHeight:mainArea.height
 
 
             TrafficLight {
                 id:trafficlight1
-                state:"red"
+                state:"yellow"
                 width: mainwindow.width * 0.05
                 height: mainwindow.height * 0.19
 
@@ -121,7 +122,6 @@ Window {
 
             }
 
-
             Timecounter{
                 id:timecounter
                 runspeed:50
@@ -162,6 +162,8 @@ Window {
                       }
 
             }
+
+
         }
 
     }
@@ -176,14 +178,14 @@ Window {
     }
     Connections{
         target:controlPanelHandler
-        onSimulationCommand:function (command){
+        function onSimulationCommand (command){
             console.log("simulation state:"+command)
             simEngine.executing = command;
         }
-        onSpeedSlider:function (value){
+        function onSpeedSlider (value){
             timecounter.runspeed=value;
         }
-        onResetbtn:function (){
+        function onResetbtn (){
            simEngine.executing = false;
             timecounter.currCount=0;
         }
