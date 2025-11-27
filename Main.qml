@@ -43,11 +43,11 @@ Window {
         Layout.fillWidth: true
         Layout.preferredWidth: 4
 
-
         SimulationEngine{
             id:simEngine
             executing:false
             anchors.fill: mainArea
+            runspeed: 50
             //areawidth:mainArea.width
             //areaHeight:mainArea.height
 
@@ -71,6 +71,7 @@ Window {
                       x = screenPos.x -mainwindow.width * 0.09
                       y = screenPos.y +mainwindow.height * 0.025
                      // console.log("Initial position - x:", x, "y:", y)
+
                   }
 
                   Connections {
@@ -147,6 +148,10 @@ Window {
                       simEngine.executionChanged.connect(function(isExecuting){
                           timecounter.running=isExecuting
                       })
+                      simEngine.runSChanged.connect(function(newSpeed){
+                          timecounter.runspeed=newSpeed
+                      })
+
                   }
 
                   Connections {
@@ -183,7 +188,7 @@ Window {
             simEngine.executing = command;
         }
         function onSpeedSlider (value){
-            timecounter.runspeed=value;
+            simEngine.runspeed =value;
         }
         function onResetbtn (){
            simEngine.executing = false;

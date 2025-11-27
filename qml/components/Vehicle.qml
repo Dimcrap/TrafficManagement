@@ -8,7 +8,7 @@ Item {
     property string line: "right"
     property int direction: 45
     property int speed: 50
-
+    z:1
 
     property double  currY
     property double currX
