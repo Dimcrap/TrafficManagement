@@ -8,9 +8,12 @@ Item {
     property int areawidth: 500
     property int areaHeight: 480
     property int runspeed: 50
-    property  var vehicles: [{}]
+    property var vehicles: [{}]
     property var vehiclesList: []
     property int vCount: 1
+    property string trafficState: "Low Traffic"
+
+
 
     signal executionChanged(bool isExecuting)
     signal runSChanged(int newSpeed)
@@ -64,19 +67,27 @@ Item {
 
         function deployVehicleSignal(lane,direction){
             deployVehicle(simengine.vCount,lane,direction)
+            vCount++;
         }
     }
 
-    function simulation(command,trafficState,speed){
-        var Tstate=(trafficState=="High Traffic")?5:(trafficState=="Medium Traffic")?3:1;
-        if(command==true && trafficState=="Hight Traffic"){
+    function simulation(command){
+        if(command==true && simengine.trafficState=="Hight Traffic"){
             // timer.ms value handling requierd
-            trafficCtrl.triggerSimulation(5,3000);
-        }else if(command==true && trafficState=="Medium Traffic"){
-            trafficCtrl.triggerSimulation(3,3000);
-        }else{
-            trafficCtrl.triggerSimulation(1,3000);
+            executing=true;
+            trafficCtrl.triggerSimulation(5,(1000 / (runspeed/50)));
+
+        }else if(command==true && simengine.trafficState=="Medium Traffic"){
+            trafficCtrl.triggerSimulation(3,(1000 / (runspeed/50)));
+            executing=true;
+
+        }else if(command==true && simengine.trafficState=="Low Traffic"){
+            trafficCtrl.triggerSimulation(1,(1000 / (runspeed/50)));
+            executing=true;
+
         }
+
+        executing=false;
     }
 
     function defineZ(lane,direction){
@@ -89,5 +100,15 @@ Item {
         }else{
             return 4
         }
+    }
+
+    function resetSim(){
+        vehicles= [{}];
+        vehiclesList= [];
+        executing=false;
+    }
+
+    function tLight_handler(trafficlight1,trafficlight2){
+
     }
 }

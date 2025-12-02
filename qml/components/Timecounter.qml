@@ -9,10 +9,11 @@ import QtQuick.Layouts
      color: "orange"
 
     property int runspeed:50
-    property string trafficstage: "low"
+    property string trafficstage: "Low Traffic"
     property bool running: true
     property int currCount:0
-    property int targetCount:99
+    property int targetCount:10
+    property int round:0
 
      function updateStatus(){
               console.log("Current count:",currCount);
@@ -32,6 +33,12 @@ import QtQuick.Layouts
               return digit>0?image2Path:image1Path;
      }
 
+     function nextRound(trafficstage,round){
+              return    (trafficstage=="Low Traffic" && round<2 ||
+                         trafficstage=="Medium Traffic" && round<3 ||
+                         trafficstage=="High Traffic"
+                         && round <4)? true:false;
+     }
 
     Timer{
         id:counterTimer
@@ -43,8 +50,9 @@ import QtQuick.Layouts
               currCount++;
               updateStatus();
               }else if(currCount==targetCount){
-              resetCounter();
+              (nextRound())?currCount=0:resetCounter();
               }else{
+                  currCount=0;
                   stopCounting();
               }
         }

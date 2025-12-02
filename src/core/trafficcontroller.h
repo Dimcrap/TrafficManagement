@@ -23,4 +23,4 @@ signals:
 /*
  * handling moving based on trafficcount logic:
  * search for vehicles.direction=45 or -45  for stop or move
-\
+*/

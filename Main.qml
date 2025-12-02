@@ -50,7 +50,8 @@ Window {
             runspeed: 50
             //areawidth:mainArea.width
             //areaHeight:mainArea.height
-
+            property string trafficState: "Low Traffic"
+            property int simRunningSpeed: 1000
 
             TrafficLight {
                 id:trafficlight1
@@ -151,6 +152,9 @@ Window {
                       simEngine.runSChanged.connect(function(newSpeed){
                           timecounter.runspeed=newSpeed
                       })
+                      simEngine.onTrafficStateChanged.connect(function(state){
+                          timecounter.trafficstage=state;
+                      })
 
                   }
 
@@ -184,16 +188,21 @@ Window {
     Connections{
         target:controlPanelHandler
         function onSimulationCommand (command){
-            console.log("simulation state:"+command)
             simEngine.executing = command;
+           //simEngine.simulation(command)
         }
         function onSpeedSlider (value){
             simEngine.runspeed =value;
         }
         function onResetbtn (){
            simEngine.executing = false;
-            timecounter.currCount=0;
+            //simEngine.resetSim();
+            timecounter.resetCounter();
         }
+        function onTrafficState(state){
+            simEngine.trafficState=state;
+        }
+
     /*Connections{
     target: simEngine
     onExe
