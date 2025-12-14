@@ -60,6 +60,15 @@ QPointF PositionCalculator::snapToGrid(double isoX, double isoY) const
 
 QPointF PositionCalculator::getnextMovement(std::string lane, int dir, QPoint currentPos) const
 {
+    if(dir==45&&lane=="right"){
+        return QPoint(currentPos.x()+2,currentPos.y()-2);
+    }else if(dir==45&&lane=="left"){
+        return QPoint(currentPos.x()-2,currentPos.y()+2);
+    }else if(dir==-45&&lane=="right"){
+        return QPoint(currentPos.x()+2,currentPos.y()+2);
+    }else{
+        return QPoint(currentPos.x()-2,currentPos.y()-2);
+    }
 
 }
 

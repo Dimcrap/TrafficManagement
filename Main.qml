@@ -124,10 +124,11 @@ Window {
 
             }
 
+
             Timecounter{
                 id:timecounter
                 runspeed:50
-                trafficstage: "low"
+                trafficstage: "Low Traffic"
                 running: false
                 currCount:0
                 targetCount:60
@@ -173,6 +174,7 @@ Window {
             }
 
 
+
         }
 
     }
@@ -189,7 +191,9 @@ Window {
         target:controlPanelHandler
         function onSimulationCommand (command){
             simEngine.executing = command;
-           //simEngine.simulation(command)
+           simEngine.simulation(command)
+           // simEngine.deployVehicle(1,"right",45);
+
         }
         function onSpeedSlider (value){
             simEngine.runspeed =value;

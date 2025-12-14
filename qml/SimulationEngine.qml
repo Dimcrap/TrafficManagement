@@ -35,17 +35,36 @@ Item {
 
     var VehicleQml = `
         import QtQuick 2.15
+        import  TrafficManagement 1.0
         Vehicle {
             line:"${line}"
-            direction:"${line}"
+            direction:${dir}
             speed:50
             width: 50
             height: 50
-            z:"${zpropery}"
+            z:${zpropery}
         }
     `;
-        vehicleQml=Qt.createQmlObject(vehicleQml,simengine,"dynamicImage");
-        return VehicleQml
+        console.log("--- Attempting to create QML object ---");
+            console.log(VehicleQml);
+            console.log("------------------------------------");
+
+
+        var newVehicle = null;
+           try {
+               // 3. Ensure 'simengine' is a valid visual Item in scope.
+               newVehicle = Qt.createQmlObject(VehicleQml, simengine, "dynamicVehicle_" + line);
+
+               if (newVehicle) {
+                   console.log("Successfully created vehicle for line:", line);
+               } else {
+                   console.error("createQmlObject returned null for line:", line);
+               }
+           } catch (error) {
+               // 4. This is the most important step for debugging!
+               console.error("Error creating QML object for line " + line + ": " + error);
+           }
+        return newVehicle;
     }
 
     function deployVehicle(vehicleId,lane,dir){

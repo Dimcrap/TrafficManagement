@@ -26,7 +26,7 @@ Item {
     function findImage(Vline,Vdirection){
         var path=(Vdirection==-45)?"H":"V";
         let random =trafficCtrl.randomNumber(1,4);
-        return path+4;
+        return "qrc:/images/isocars/"+path+Vline+random+".png";
     }
 
 
@@ -48,10 +48,11 @@ Item {
     }
 
     function updateVehiclePos(){
-        if(moving){
+        /*if(moving){
         x=currX;
         y=currY;
-        }
+        }*/
+        console.log("updating position executed");
     }
 
     Image {
