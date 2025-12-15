@@ -131,7 +131,7 @@ Window {
                 trafficstage: "Low Traffic"
                 running: false
                 currCount:0
-                targetCount:60
+                targetCount:10
                 width: mainwindow.width * 0.09
                 height: mainwindow.height *  0.12
 
@@ -192,7 +192,8 @@ Window {
         function onSimulationCommand (command){
             simEngine.executing = command;
            simEngine.simulation(command)
-           // simEngine.deployVehicle(1,"right",45);
+          //
+            simEngine.deployVehicle(1,"left",-45);
 
         }
         function onSpeedSlider (value){
@@ -200,7 +201,7 @@ Window {
         }
         function onResetbtn (){
            simEngine.executing = false;
-            //simEngine.resetSim();
+            simEngine.resetSim();
             timecounter.resetCounter();
         }
         function onTrafficState(state){

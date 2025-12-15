@@ -17,6 +17,7 @@ Item {
 
     signal executionChanged(bool isExecuting)
     signal runSChanged(int newSpeed)
+    signal changeTlight(var color)
 
     onExecutingChanged: {
         executionChanged(executing)
@@ -24,6 +25,10 @@ Item {
 
     onRunspeedChanged: {
         runSChanged(runspeed)
+    }
+
+    onTrafficStateChanged: {
+        console.log("traffic state changed")
     }
 
     TrafficController{
@@ -39,16 +44,13 @@ Item {
         Vehicle {
             line:"${line}"
             direction:${dir}
+            moving:true
             speed:50
             width: 50
             height: 50
             z:${zpropery}
         }
     `;
-        console.log("--- Attempting to create QML object ---");
-            console.log(VehicleQml);
-            console.log("------------------------------------");
-
 
         var newVehicle = null;
            try {
@@ -82,11 +84,12 @@ Item {
     }
 
     Connections{
-        target:TrafficController
+        target:trafficCtrl
 
-        function deployVehicleSignal(lane,direction){
+        function onDeployVehicleSignal(lane,direction){
             deployVehicle(simengine.vCount,lane,direction)
             vCount++;
+            console.log("deploy signal emited")
         }
     }
 
@@ -101,12 +104,12 @@ Item {
             executing=true;
 
         }else if(command==true && simengine.trafficState=="Low Traffic"){
-            trafficCtrl.triggerSimulation(1,(1000 / (runspeed/50)));
+            trafficCtrl.triggerSimulation(1,(1000 / (runspeed/50))+2000);
             executing=true;
 
         }
 
-        executing=false;
+       // executing=false;
     }
 
     function defineZ(lane,direction){
@@ -122,12 +125,17 @@ Item {
     }
 
     function resetSim(){
+        for(var i=vehiclesList.length-1;i>=0;i--){
+            vehiclesList[i].destroy();
+        }
+
         vehicles= [{}];
         vehiclesList= [];
         executing=false;
     }
 
+    /*
     function tLight_handler(trafficlight1,trafficlight2){
-
-    }
+        trafficlight1.
+    }*/
 }

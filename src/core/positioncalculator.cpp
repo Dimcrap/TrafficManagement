@@ -58,18 +58,86 @@ QPointF PositionCalculator::snapToGrid(double isoX, double isoY) const
     return QPointF(std::round(isoX),std::round(isoY));
 }
 
-QPointF PositionCalculator::getnextMovement(std::string lane, int dir, QPoint currentPos) const
+QPointF PositionCalculator::getnextMovement(QString lane, float angle, QPoint currentPos) const
 {
-    if(dir==45&&lane=="right"){
-        return QPoint(currentPos.x()+2,currentPos.y()-2);
-    }else if(dir==45&&lane=="left"){
-        return QPoint(currentPos.x()-2,currentPos.y()+2);
-    }else if(dir==-45&&lane=="right"){
-        return QPoint(currentPos.x()+2,currentPos.y()+2);
+
+    double mathAngleDeg = 90.0 - angle;  // Adjust for coordinate system
+    if (mathAngleDeg < 0) mathAngleDeg += 360.0;
+
+    double angleRad=(angle * M_PI /180.0);
+
+    double speed=2.0;
+
+    double dx=cos(angleRad)* speed;
+    double dy=sin(angleRad)* speed;
+
+    dy=-dy;
+
+    if(angle>0&&lane=="right"){
+    return QPointF(currentPos.x()+dx,currentPos.y()+dy);
+      //  qDebug()<<"right lane pos gived";
+       // return QPoint(currentPos.x()+1.99999,currentPos.y()-0.00000000000002842177);
+    }else if(angle>0&&lane=="left"){
+        return QPoint(currentPos.x()-1,currentPos.y()+1);
+    }else if(angle<0&&lane=="right"){
+        return QPoint(currentPos.x()-2,currentPos.y()-1);
     }else{
-        return QPoint(currentPos.x()-2,currentPos.y()-2);
+        return QPoint(currentPos.x()+2,currentPos.y()+1);
     }
 
+}
+
+double PositionCalculator::calculateAngle(QPointF startPos, QPointF endPos) const
+{
+
+    QLineF line(startPos,endPos);
+    double qtAngle =line.angle();
+
+    double dx = endPos.x() - startPos.x();
+    double dy = endPos.y() - startPos.y();
+    double mathAngleRad = atan2(dy, dx);
+    double mathAngleDeg = mathAngleRad * 180.0 / M_PI;
+
+       if (mathAngleDeg < 0) mathAngleDeg += 360.0;
+      // qDebug() << "Math angle (atan2):" << mathAngleDeg << "degrees";
+       //qDebug() << "Difference:" << (qtAngle - mathAngleDeg);
+
+       return qtAngle;
+   /* double dx = endPos.x() - startPos.x();
+    double dy = endPos.y() - startPos.y();
+
+    // Calculate angle in radians using atan2
+    double angleRad = atan2(dy, dx);
+
+    // Convert to degrees
+    double angleDeg = angleRad * 180.0 / M_PI;
+
+    // Normalize to 0-360
+    if (angleDeg < 0) angleDeg += 360.0;
+
+    return angleDeg;*/
+}
+
+QPointF PositionCalculator::moveToward(QPoint currentPos, QPointF targetPos, double speed) const
+{
+    double dx = targetPos.x() - currentPos.x();
+    double dy = targetPos.y() - currentPos.y();
+
+    // Calculate distance to target
+    double distance = sqrt(dx*dx + dy*dy);
+
+    // If we're at or very close to target, return target
+    if (distance <= speed) {
+        return targetPos;
+    }
+
+    // Normalize the vector (make it unit length)
+    double unitX = dx / distance;
+    double unitY = dy / distance;
+    return QPointF(
+        currentPos.x() + unitX * speed,
+        currentPos.y() + unitY * speed
+        );
 }
 
 void PositionCalculator::setTileSize(double width, double height)

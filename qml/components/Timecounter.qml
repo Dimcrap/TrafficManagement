@@ -23,6 +23,7 @@ import QtQuick.Layouts
               var image1Path;
               var image2Path;
 
+
               if(currCount<10){
               image1Path="qrc:/images/seven-sagment/LED_digit_0.png";
               image2Path= "qrc:/images/seven-sagment/LED_digit_"+currCount+".png";
@@ -43,7 +44,7 @@ import QtQuick.Layouts
     Timer{
         id:counterTimer
         interval: 1000 / (runspeed/50)
-        running: timecounter.running && timecounter.currCount < timecounter .targetCount
+        running:timecounter.running // timecounter.running && timecounter.currCount < timecounter .targetCount
         repeat: true
         onTriggered: {
               if(timecounter.currCount< timecounter.targetCount){
