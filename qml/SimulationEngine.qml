@@ -14,10 +14,8 @@ Item {
     property string trafficState: "Low Traffic"
 
 
-
     signal executionChanged(bool isExecuting)
     signal runSChanged(int newSpeed)
-    signal changeTlight(var color)
 
     onExecutingChanged: {
         executionChanged(executing)
@@ -27,7 +25,7 @@ Item {
         runSChanged(runspeed)
     }
 
-    onTrafficStateChanged: {
+    onTrafficStateChanged:{
         console.log("traffic state changed")
     }
 
@@ -58,7 +56,7 @@ Item {
                newVehicle = Qt.createQmlObject(VehicleQml, simengine, "dynamicVehicle_" + line);
 
                if (newVehicle) {
-                   console.log("Successfully created vehicle for line:", line);
+                  // console.log("Successfully created vehicle for line:", line);
                } else {
                    console.error("createQmlObject returned null for line:", line);
                }
@@ -89,27 +87,25 @@ Item {
         function onDeployVehicleSignal(lane,direction){
             deployVehicle(simengine.vCount,lane,direction)
             vCount++;
-            console.log("deploy signal emited")
+           // console.log("deploy signal emited")
         }
     }
 
     function simulation(command){
-        if(command==true && simengine.trafficState=="Hight Traffic"){
-            // timer.ms value handling requierd
+        if(command==true){
             executing=true;
+
+        if(simengine.trafficState=="Hight Traffic"){
             trafficCtrl.triggerSimulation(5,(1000 / (runspeed/50)));
-
-        }else if(command==true && simengine.trafficState=="Medium Traffic"){
+        }else if( simengine.trafficState=="Medium Traffic"){
             trafficCtrl.triggerSimulation(3,(1000 / (runspeed/50)));
-            executing=true;
-
-        }else if(command==true && simengine.trafficState=="Low Traffic"){
+        }else {//( simengine.trafficState=="Low Traffic"){
             trafficCtrl.triggerSimulation(1,(1000 / (runspeed/50))+2000);
-            executing=true;
-
+        }
+        }else{
+            executing=false;
         }
 
-       // executing=false;
     }
 
     function defineZ(lane,direction){

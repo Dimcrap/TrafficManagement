@@ -11,7 +11,7 @@ trafficcontroller::trafficcontroller(QObject * parent):QObject(parent){
         emit deployVehicleSignal("left",-45);
 
         m_remainvehicles --;
-        if(m_remainvehicles){
+        if(m_remainvehicles<=0){
             m_timer->stop();
         }
 
@@ -26,5 +26,13 @@ int trafficcontroller::randomNumber(int min, int max)
 void trafficcontroller::triggerSimulation(int vehicleCount, int delayMs)
 {
     m_remainvehicles=vehicleCount;
+
+    emit deployVehicleSignal("right",45);
+    emit deployVehicleSignal("right",-45);
+    emit deployVehicleSignal("left",45);
+    emit deployVehicleSignal("left",-45);
+
+    m_remainvehicles --;
+
     m_timer->start(delayMs);
 }

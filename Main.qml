@@ -128,10 +128,7 @@ Window {
             Timecounter{
                 id:timecounter
                 runspeed:50
-                trafficstage: "Low Traffic"
-                running: false
                 currCount:0
-                targetCount:10
                 width: mainwindow.width * 0.09
                 height: mainwindow.height *  0.12
 
@@ -148,13 +145,15 @@ Window {
                       x = screenPos.x -mainwindow.width * 0.115
                       y = screenPos.y +mainwindow.height * 0.03
                       simEngine.executionChanged.connect(function(isExecuting){
-                          timecounter.running=isExecuting
+                          if(isExecuting){timecounter.startCounting()}
+                          else{console.log("executing was false in executionChanged");
+                              timecounter.stopCounting();}
                       })
                       simEngine.runSChanged.connect(function(newSpeed){
                           timecounter.runspeed=newSpeed
                       })
-                      simEngine.onTrafficStateChanged.connect(function(state){
-                          timecounter.trafficstage=state;
+                      simEngine.onTrafficStateChanged.connect(function(){
+                          timecounter.trafficstage=simEngine.trafficState;
                       })
 
                   }
@@ -190,42 +189,34 @@ Window {
     Connections{
         target:controlPanelHandler
         function onSimulationCommand (command){
-            simEngine.executing = command;
-           simEngine.simulation(command)
-          //
-            simEngine.deployVehicle(1,"left",-45);
-
+           simEngine.simulation(command);
         }
         function onSpeedSlider (value){
             simEngine.runspeed =value;
         }
         function onResetbtn (){
-           simEngine.executing = false;
-            simEngine.resetSim();
+           simEngine.simulation(false)
             timecounter.resetCounter();
         }
         function onTrafficState(state){
+            console.log("main qml caught signal:"+state)
             simEngine.trafficState=state;
         }
-
-    /*Connections{
-    target: simEngine
-    onExe
-
-    }*/
-        //onSpeedSlider(int value);
-        //onTrafficState(QString state);
     }
+        Connections{
+            target:timecounter
+            function onChangeTlights(color1,color2){
+                    trafficlight1.state=color1;
+                    trafficlight2.state=color2;
+            }
+           function onRoundfinsished(){
+                simEngine.resetSim();
+                timecounter.stopCounting();
+            }
+        }
+
 
 }
-
-
-
-
-
-
-
-
 
 
 

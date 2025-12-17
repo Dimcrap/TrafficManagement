@@ -1,8 +1,8 @@
 qt_add_library(traffic_core STATIC
-vehiclemodel.cpp
+
 trafficcontroller.cpp
 
-vehiclemodel.h
+
 trafficcontroller.h
 
 controlpanelhandler.h

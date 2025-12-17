@@ -69,7 +69,7 @@ Item {
 
     Timer{
         id:movmentTimer
-        interval: 140
+        interval: 35
         running :false
         repeat:true
         onTriggered: {
@@ -104,25 +104,25 @@ Item {
                                                          Qt.point((ParentPoint.x * 0.81 ), (ParentPoint.y *0.22)));
             return poscalculator.moveToward(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.81 ), (ParentPoint.y *0.22)),
-                                            root.speed/5);
+                                            root.speed/8);
         }else if(root.line=="left"&&root.direction==45){
             angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
                                                          Qt.point((ParentPoint.x * 0.068), (ParentPoint.y *0.775)));
             return poscalculator.moveToward(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.068), (ParentPoint.y *0.775)),
-                                            root.speed/5);
+                                            root.speed/8);
         }else if(root.line=="right"&&root.direction==-45){
             angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
                                               Qt.point((ParentPoint.x * 0.099),(ParentPoint.y * 0.15)));
             return poscalculator.moveToward(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.099),(ParentPoint.y * 0.15)),
-                                            root.speed/5);
+                                            root.speed/8);
         }else{
             angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.775),(ParentPoint.y * 0.835)));
             return poscalculator.moveToward(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.775),(ParentPoint.y * 0.835)),
-                                            root.speed/5);
+                                            root.speed/8);
         }
 
 
