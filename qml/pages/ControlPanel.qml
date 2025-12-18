@@ -50,9 +50,9 @@ Rectangle {
         Slider{
             id:speedSlider
             Layout.fillWidth:true
-            from: 0
+            from: 1
             to:100
-            value: 50
+            value: 30
             onValueChanged: controlPanelHandler.setSpeed(value)
                 //console.log("Speed set to :",value)
         }

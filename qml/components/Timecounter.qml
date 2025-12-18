@@ -8,7 +8,7 @@ import QtQuick.Layouts
      id:timecounter
      color: "orange"
 
-    property int runspeed:50
+    property int runspeed:30
     property var trafficstage: "Low Traffic"
     property bool running: false
     property int currCount:0
@@ -52,12 +52,12 @@ import QtQuick.Layouts
      function targetCountFinder(){
               switch (timecounter.trafficstage){
               case "Medium Traffic":
-                            return 15;
+                            return 12;
               case "High Traffic":
-                            return 20;
+                            return 18;
               default:
                            // console.log("targetCountFinder value :"+trafficstage)
-                            return 10;
+                            return 8;
               }
      }
 
@@ -75,24 +75,24 @@ import QtQuick.Layouts
 
     Timer{
         id:counterTimer
-        interval: 500 / (runspeed/50)
+        interval: 300 / (runspeed/50)
         running:timecounter.running //timecounter.running && timecounter.currCount < timecounter .targetCount
         repeat: true
         onTriggered: {
               if(timecounter.currCount< timecounter.targetCount){
               currCount++;
               updateStatus();
-              }else if(currCount==targetCount){
+              }else /*if(currCount==targetCount)*/{
 
                          if(nextRound()){
                             currCount=0;
                             changeTlights("yellow","yellow");
                             counterTimer.stop();
                             roundShif.start();
-
+                         }else{
+                            //console.log("else condition for executing reset counter executed");
+                            resetCounter();
                          }
-              }else{
-                   resetCounter();
               }
         }
     }
@@ -143,7 +143,7 @@ import QtQuick.Layouts
 
     Component.onCompleted: {
                   updateStatus();
-                  console.log("target count:"+targetCount)
+                  //console.log("target count:"+targetCount)
     }
 
     }

@@ -46,6 +46,7 @@ Item {
             speed:50
             width: 50
             height: 50
+            trafficState:"${simengine.trafficState}"
             z:${zpropery}
         }
     `;
@@ -71,7 +72,7 @@ Item {
         var vehicle =deployMachine(lane,dir);
         vehicles[vehicleId]=vehicle;
         vehiclesList.push(vehicle);
-        return vehicle;
+        return vehicles[vehicleId];
     }
 
     function setVehiclesSpeed(newSpeed){
@@ -85,22 +86,22 @@ Item {
         target:trafficCtrl
 
         function onDeployVehicleSignal(lane,direction){
+            console.log("deploying  vehicle with id:"+simengine.vCount)
             deployVehicle(simengine.vCount,lane,direction)
             vCount++;
-           // console.log("deploy signal emited")
         }
     }
 
     function simulation(command){
         if(command==true){
             executing=true;
-
-        if(simengine.trafficState=="Hight Traffic"){
-            trafficCtrl.triggerSimulation(5,(1000 / (runspeed/50)));
+       // console.log("traffic status from simulation func:"+trafficState);
+        if(simengine.trafficState=="High Traffic"){
+            trafficCtrl.triggerSimulation(5,(600 / (runspeed/50)));
         }else if( simengine.trafficState=="Medium Traffic"){
-            trafficCtrl.triggerSimulation(3,(1000 / (runspeed/50)));
+            trafficCtrl.triggerSimulation(3,(500 / (runspeed/50)));
         }else {//( simengine.trafficState=="Low Traffic"){
-            trafficCtrl.triggerSimulation(1,(1000 / (runspeed/50))+2000);
+            trafficCtrl.triggerSimulation(1,(500 / (runspeed/50)));
         }
         }else{
             executing=false;
@@ -120,6 +121,71 @@ Item {
         }
     }
 
+    function changeMovment(currdirection){
+        var Vlanecount=(trafficState=="Low Traffic")?2:(trafficState=="Medium Traffic")?3:5;
+       //console.log("Vlanecount *2="+Vlanecount*2)
+        var indexes=findV_indexs(Vlanecount*2,currdirection) //45
+        var indexes2=findV_indexs(Vlanecount*2,-currdirection)  //-45
+       /* for(var indx of indexes){
+            console.log(indx);
+        }*/
+
+        if(currdirection==45){
+            applyMovment(indexes,false);
+            applyMovment(indexes2,true);
+        }else{
+            applyMovment(indexes,true);
+            applyMovment(indexes2,false);
+        }
+    }
+
+    function findV_indexs(vehiclesCount,dir){
+        var list=[];
+        let ex=0
+
+        if(dir==45){
+            for(var i=1;ex<=vehiclesCount/2;i+=4){
+                list.push(i);
+                ex++;
+            }
+            ex=0;
+            for(var f=3;ex<=vehiclesCount/2;f+=4){
+                list.push(f);
+                ex++;
+            }
+            ex=0;
+        }else{
+            for(var c=2;ex<=vehiclesCount/2;c+=4){
+                list.push(c);
+                ex++;
+            }
+            ex=0;
+            for(var k=4;ex<=vehiclesCount/2;k+=4){
+                list.push(k);
+                ex++;
+            }
+
+        }
+
+        return list;
+    }
+
+    function applyMovment(idList,move){
+        for(var i =0;i<=idList.length;i++){
+           if(simengine.vehicles[idList[i]]){
+               console.log("vehiclelist obj founed")
+               simengine.vehicles[idList[i]].moving=move;
+           }else{
+                console.log("didn't find out the object");
+           }
+            /*if(simengine.vehicles[2]){
+                console.log("vechicles[2] do exist");
+            }else{
+                console.log("vehicles[2] didn't exist");
+            }*/
+        }
+    }
+
     function resetSim(){
         for(var i=vehiclesList.length-1;i>=0;i--){
             vehiclesList[i].destroy();
@@ -127,6 +193,7 @@ Item {
 
         vehicles= [{}];
         vehiclesList= [];
+        vCount=0;
         executing=false;
     }
 

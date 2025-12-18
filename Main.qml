@@ -50,7 +50,7 @@ Window {
             runspeed: 50
             //areawidth:mainArea.width
             //areaHeight:mainArea.height
-            property string trafficState: "Low Traffic"
+           // property string trafficState: "Low Traffic"
             property int simRunningSpeed: 1000
 
             TrafficLight {
@@ -146,7 +146,7 @@ Window {
                       y = screenPos.y +mainwindow.height * 0.03
                       simEngine.executionChanged.connect(function(isExecuting){
                           if(isExecuting){timecounter.startCounting()}
-                          else{console.log("executing was false in executionChanged");
+                          else{//console.log("executing was false in executionChanged");
                               timecounter.stopCounting();}
                       })
                       simEngine.runSChanged.connect(function(newSpeed){
@@ -208,8 +208,11 @@ Window {
             function onChangeTlights(color1,color2){
                     trafficlight1.state=color1;
                     trafficlight2.state=color2;
+                   // console.log("changeTlights emmited");
+                //simEngine.changeMovment(-45);
             }
            function onRoundfinsished(){
+                simEngine.simulation(false)
                 simEngine.resetSim();
                 timecounter.stopCounting();
             }

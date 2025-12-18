@@ -7,13 +7,13 @@ Item {
     property bool moving: false
     property string line: "right"
     property int direction: 45
-    property int speed: 50
+    property int speed: 30
     z:1
     property var parentwidth:parent.width
     property var parentheight:parent.height
     property double  currY: parent.width * 0.115;
     property double currX: parent.height *0.8475
-
+    property string trafficState:"Low Traffic"
 
     Positioncalculator{
         id:poscalculator
@@ -99,30 +99,32 @@ Item {
     function movePos(){
         var ParentPoint=Qt.point(parentwidth,parentheight);
         var angle;
+        var vehiclespeed=(trafficState=="Low Traffic")?root.speed/13:(trafficState=="Medium Traffic")?root.speed/15:root.speed/19;
+        //console.log("vehicle speed:"+vehiclespeed)
         if(root.line=="right"&&root.direction==45){
             angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
                                                          Qt.point((ParentPoint.x * 0.81 ), (ParentPoint.y *0.22)));
             return poscalculator.moveToward(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.81 ), (ParentPoint.y *0.22)),
-                                            root.speed/8);
+                                            vehiclespeed);
         }else if(root.line=="left"&&root.direction==45){
             angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
                                                          Qt.point((ParentPoint.x * 0.068), (ParentPoint.y *0.775)));
             return poscalculator.moveToward(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.068), (ParentPoint.y *0.775)),
-                                            root.speed/8);
+                                            vehiclespeed);
         }else if(root.line=="right"&&root.direction==-45){
             angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
                                               Qt.point((ParentPoint.x * 0.099),(ParentPoint.y * 0.15)));
             return poscalculator.moveToward(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.099),(ParentPoint.y * 0.15)),
-                                            root.speed/8);
+                                            vehiclespeed);
         }else{
             angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.775),(ParentPoint.y * 0.835)));
             return poscalculator.moveToward(Qt.point(root.x,root.y),
                                             Qt.point((ParentPoint.x * 0.775),(ParentPoint.y * 0.835)),
-                                            root.speed/8);
+                                            vehiclespeed);
         }
 
 
