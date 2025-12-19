@@ -39,8 +39,6 @@ QPointF PositionCalculator::screenToIso(QPoint screen) const
     return QPointF(isoX,isoY);
 }
 
-
-
 QPointF PositionCalculator::isoToScreen(QPointF isometric) const
 {
     double screenX=(isometric.x() * (m_tileWidth/2.0)) -
@@ -52,7 +50,6 @@ QPointF PositionCalculator::isoToScreen(QPointF isometric) const
     return QPoint(screenX,screenY);
 }
 
-
 QPointF PositionCalculator::snapToGrid(double isoX, double isoY) const
 {
     return QPointF(std::round(isoX),std::round(isoY));
@@ -60,7 +57,6 @@ QPointF PositionCalculator::snapToGrid(double isoX, double isoY) const
 
 QPointF PositionCalculator::getnextMovement(QString lane, float angle, QPoint currentPos) const
 {
-
     double mathAngleDeg = 90.0 - angle;  // Adjust for coordinate system
     if (mathAngleDeg < 0) mathAngleDeg += 360.0;
 

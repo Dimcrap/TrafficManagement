@@ -13,7 +13,7 @@ import QtQuick.Layouts
     property bool running: false
     property int currCount:0
     property int targetCount:targetCountFinder()
-    property int round:0
+    property int round:1
 
      signal changeTlights(var color1,var color2)
      signal roundfinsished()
@@ -43,10 +43,10 @@ import QtQuick.Layouts
      }
 
      function nextRound(){
-              return    (trafficstage=="Low Traffic" && round<1 ||
-                         trafficstage=="Medium Traffic" && round<2 ||
+              return    (trafficstage=="Low Traffic" && round<2 ||
+                         trafficstage=="Medium Traffic" && round<3 ||
                          trafficstage=="High Traffic"
-                         && round <3)? true:false;
+                         && round <4)? true:false;
      }
 
      function targetCountFinder(){
@@ -68,7 +68,9 @@ import QtQuick.Layouts
           repeat:false
           onTriggered: {
               round++;
-              changeTlights("red","green");
+              var cols=defineColor()
+              changeTlights(cols[0],cols[1]);
+              //changeTlights("red","green");
               counterTimer.start();
           }
     }
@@ -124,21 +126,33 @@ import QtQuick.Layouts
 
 
     function stopCounting(){
-                  running=false;
+              running=false;
     }
 
     function startCounting(){
-                  changeTlights("green","red");
-                  running=true;
+              var cols=defineColor()
+              changeTlights(cols[0],cols[1]);
+              running=true;
     }
 
     function resetCounter(){
-                  currCount=0;
-                  round=0;
-                  //counterTimer.running=false;
-                  updateStatus();
-                  stopCounting();
-                  roundfinsished();
+              currCount=0;
+              round=1;
+              //counterTimer.running=false;
+              updateStatus();
+              stopCounting();
+              roundfinsished();
+              changeTlights("off","off");
+    }
+
+    function defineColor(){
+              var colors=[];
+                  if(timecounter.round%2!=0){
+                            colors.push("red","green");
+                  }else{
+                            colors.push("green","red");
+                  }
+                  return colors;
     }
 
     Component.onCompleted: {

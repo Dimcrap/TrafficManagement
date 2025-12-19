@@ -8,6 +8,7 @@ Item {
     property string line: "right"
     property int direction: 45
     property int speed: 30
+    property int  ID: 0
     z:1
     property var parentwidth:parent.width
     property var parentheight:parent.height
@@ -39,7 +40,6 @@ Item {
         var ParentPoint=Qt.point(parent.width,parent.height);
         if(lane=="right" && dir==45)
         {
-            //console.log("parentP width at creation:"+parentwidth);
             return Qt.point((ParentPoint.x * 0.115), (ParentPoint.y *0.840));
         }if(dir==45 && lane=="left")
         {
@@ -50,6 +50,23 @@ Item {
         }else
         {
             return Qt.point((ParentPoint.x * 0.049),(ParentPoint.y * 0.191));
+        }
+    }
+
+    function findEndPos(){
+        var ParentPoint=Qt.point(parentwidth,parentheight);
+        if(root.line=="right"&&root.direction==45)
+        {
+            return Qt.point((ParentPoint.x * 0.81 ), (ParentPoint.y *0.22));
+        }else if(root.line=="left"&&root.direction==45)
+        {
+            return Qt.point((ParentPoint.x * 0.068), (ParentPoint.y *0.775));
+
+        }else if(root.line=="right"&&root.direction==-45)
+        {
+            return Qt.point((ParentPoint.x * 0.099),(ParentPoint.y * 0.15));
+        }else{
+            return Qt.point((ParentPoint.x * 0.775),(ParentPoint.y * 0.835));
         }
     }
 
@@ -82,6 +99,7 @@ Item {
                 currX=pos.x;
                 currY=pos.y;
             }
+
             updateVehiclePos();
         }
     }
@@ -98,35 +116,11 @@ Item {
 
     function movePos(){
         var ParentPoint=Qt.point(parentwidth,parentheight);
-        var angle;
-        var vehiclespeed=(trafficState=="Low Traffic")?root.speed/13:(trafficState=="Medium Traffic")?root.speed/15:root.speed/19;
-        //console.log("vehicle speed:"+vehiclespeed)
-        if(root.line=="right"&&root.direction==45){
-            angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
-                                                         Qt.point((ParentPoint.x * 0.81 ), (ParentPoint.y *0.22)));
-            return poscalculator.moveToward(Qt.point(root.x,root.y),
-                                            Qt.point((ParentPoint.x * 0.81 ), (ParentPoint.y *0.22)),
-                                            vehiclespeed);
-        }else if(root.line=="left"&&root.direction==45){
-            angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
-                                                         Qt.point((ParentPoint.x * 0.068), (ParentPoint.y *0.775)));
-            return poscalculator.moveToward(Qt.point(root.x,root.y),
-                                            Qt.point((ParentPoint.x * 0.068), (ParentPoint.y *0.775)),
-                                            vehiclespeed);
-        }else if(root.line=="right"&&root.direction==-45){
-            angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
-                                              Qt.point((ParentPoint.x * 0.099),(ParentPoint.y * 0.15)));
-            return poscalculator.moveToward(Qt.point(root.x,root.y),
-                                            Qt.point((ParentPoint.x * 0.099),(ParentPoint.y * 0.15)),
-                                            vehiclespeed);
-        }else{
-            angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),
-                                            Qt.point((ParentPoint.x * 0.775),(ParentPoint.y * 0.835)));
-            return poscalculator.moveToward(Qt.point(root.x,root.y),
-                                            Qt.point((ParentPoint.x * 0.775),(ParentPoint.y * 0.835)),
-                                            vehiclespeed);
-        }
-
+        var vehiclespeed=(trafficState=="Low Traffic")?root.speed/13:(trafficState=="Medium Traffic")?
+                                                            root.speed/15:root.speed/19;
+        var endPos=findEndPos();
+        var angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),endPos);
+        return poscalculator.moveToward(Qt.point(root.x,root.y),endPos,vehiclespeed);
 
     }
 

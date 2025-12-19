@@ -12,7 +12,7 @@ Item {
     property var vehiclesList: []
     property int vCount: 1
     property string trafficState: "Low Traffic"
-
+    property bool deployed:false
 
     signal executionChanged(bool isExecuting)
     signal runSChanged(int newSpeed)
@@ -33,7 +33,7 @@ Item {
         id:trafficCtrl;
     }
 
-    function deployMachine(line,dir){
+    function deployMachine(line,dir,id){
     var zpropery=defineZ(line,dir);
 
     var VehicleQml = `
@@ -42,6 +42,7 @@ Item {
         Vehicle {
             line:"${line}"
             direction:${dir}
+            ID:${id}
             moving:true
             speed:50
             width: 50
@@ -69,7 +70,7 @@ Item {
     }
 
     function deployVehicle(vehicleId,lane,dir){
-        var vehicle =deployMachine(lane,dir);
+        var vehicle =deployMachine(lane,dir,vehicleId);
         vehicles[vehicleId]=vehicle;
         vehiclesList.push(vehicle);
         return vehicles[vehicleId];
@@ -94,17 +95,25 @@ Item {
 
     function simulation(command){
         if(command==true){
-            executing=true;
-       // console.log("traffic status from simulation func:"+trafficState);
-        if(simengine.trafficState=="High Traffic"){
-            trafficCtrl.triggerSimulation(5,(600 / (runspeed/50)));
-        }else if( simengine.trafficState=="Medium Traffic"){
-            trafficCtrl.triggerSimulation(3,(500 / (runspeed/50)));
-        }else {//( simengine.trafficState=="Low Traffic"){
-            trafficCtrl.triggerSimulation(1,(500 / (runspeed/50)));
-        }
+            executing=command;
+
+            if(!deployed){
+                //console.log("traffic status from simulation func:"+trafficState);
+                if(simengine.trafficState=="High Traffic"){
+                    trafficCtrl.triggerSimulation(5,(600 / (runspeed/50)));
+                }else if( simengine.trafficState=="Medium Traffic"){
+                    trafficCtrl.triggerSimulation(3,(500 / (runspeed/50)));
+                }else {//( simengine.trafficState=="Low Traffic"){
+                    trafficCtrl.triggerSimulation(1,(500 / (runspeed/50)));
+                }
+                deployed=true;
+            }else{
+                allVehiclesMovments(command);
+            }
+
         }else{
-            executing=false;
+            executing=command;
+            allVehiclesMovments(command);
         }
 
     }
@@ -195,6 +204,13 @@ Item {
         vehiclesList= [];
         vCount=0;
         executing=false;
+        deployed=false;
+    }
+
+    function allVehiclesMovments(move){
+        for (var Vobjec of vehicles){
+            Vobjec.moving=move;
+        }
     }
 
     /*

@@ -55,7 +55,7 @@ Window {
 
             TrafficLight {
                 id:trafficlight1
-                state:"yellow"
+                state:"off"
                 width: mainwindow.width * 0.05
                 height: mainwindow.height * 0.19
 
@@ -91,7 +91,7 @@ Window {
 
             TrafficLight {
                 id:trafficlight2
-                state:"yellow"
+                state:"off"
                 width: mainwindow.width * 0.05
                 height: mainwindow.height * 0.19
 
@@ -209,7 +209,7 @@ Window {
                     trafficlight1.state=color1;
                     trafficlight2.state=color2;
                    // console.log("changeTlights emmited");
-                //simEngine.changeMovment(-45);
+                simEngine.changeMovment(-45);
             }
            function onRoundfinsished(){
                 simEngine.simulation(false)
