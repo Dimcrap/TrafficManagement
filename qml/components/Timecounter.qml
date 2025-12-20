@@ -2,8 +2,6 @@ import QtQuick 2.15
 import QtQuick.Layouts
 
 
-
-
  Rectangle {
      id:timecounter
      color: "orange"
@@ -16,7 +14,7 @@ import QtQuick.Layouts
     property int round:1
 
      signal changeTlights(var color1,var color2)
-     signal roundfinsished()
+     signal roundsfinsished()
 
      onTrafficstageChanged: {
                    targetCount=targetCountFinder();
@@ -93,7 +91,8 @@ import QtQuick.Layouts
                             roundShif.start();
                          }else{
                             //console.log("else condition for executing reset counter executed");
-                            resetCounter();
+                            //resetCounter();
+                            roundsfinsished()
                          }
               }
         }
@@ -141,7 +140,7 @@ import QtQuick.Layouts
               //counterTimer.running=false;
               updateStatus();
               stopCounting();
-              roundfinsished();
+              roundsfinsished();
               changeTlights("off","off");
     }
 

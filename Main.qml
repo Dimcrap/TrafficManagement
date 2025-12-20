@@ -209,9 +209,9 @@ Window {
                     trafficlight1.state=color1;
                     trafficlight2.state=color2;
                    // console.log("changeTlights emmited");
-                simEngine.changeMovment(-45);
+                //simEngine.changeMovment(-45);
             }
-           function onRoundfinsished(){
+           function onRoundsfinsished(){
                 simEngine.simulation(false)
                 simEngine.resetSim();
                 timecounter.stopCounting();

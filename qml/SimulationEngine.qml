@@ -17,6 +17,7 @@ Item {
     signal executionChanged(bool isExecuting)
     signal runSChanged(int newSpeed)
 
+
     onExecutingChanged: {
         executionChanged(executing)
     }
@@ -42,7 +43,7 @@ Item {
         Vehicle {
             line:"${line}"
             direction:${dir}
-            ID:${id}
+            vID:${id}
             moving:true
             speed:50
             width: 50
@@ -52,9 +53,9 @@ Item {
         }
     `;
 
+
         var newVehicle = null;
            try {
-               // 3. Ensure 'simengine' is a valid visual Item in scope.
                newVehicle = Qt.createQmlObject(VehicleQml, simengine, "dynamicVehicle_" + line);
 
                if (newVehicle) {
@@ -66,6 +67,17 @@ Item {
                // 4. This is the most important step for debugging!
                console.error("Error creating QML object for line " + line + ": " + error);
            }
+
+           var onvehicleEndingHandler=function(vehicleId){
+               if(simengine.vehicles[vehicleId]){
+                   simengine.vehicles[vehicleId].destroy();
+               }else{
+                   console.log("no vehicle found with id:"+vehicleId)
+               }
+
+           }
+        newVehicle.vehicleReached.connect(onvehicleEndingHandler);
+
         return newVehicle;
     }
 

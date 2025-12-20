@@ -8,13 +8,15 @@ Item {
     property string line: "right"
     property int direction: 45
     property int speed: 30
-    property int  ID: 0
+    property int  vID: 0
     z:1
     property var parentwidth:parent.width
     property var parentheight:parent.height
     property double  currY: parent.width * 0.115;
     property double currX: parent.height *0.8475
     property string trafficState:"Low Traffic"
+
+    signal vehicleReached(int vehicleId)
 
     Positioncalculator{
         id:poscalculator
@@ -24,13 +26,11 @@ Item {
         id:trafficCtrl
     }
 
-
     function findImage(Vline,Vdirection){
         var path=(Vdirection==-45)?"H":"V";
         let random =trafficCtrl.randomNumber(1,4);
         return "qrc:/images/isocars/"+path+Vline+random+".png";
     }
-
 
     function setSpeed(newspeed){
         speed=newspeed;
@@ -46,7 +46,7 @@ Item {
             return Qt.point((ParentPoint.x * 0.749 ), (ParentPoint.y *0.173));
         }if(dir==-45 && lane=="right")
         {
-            return Qt.point((ParentPoint.x * 0.82),(ParentPoint.y * 0.79))
+            return Qt.point((ParentPoint.x * 0.82),(ParentPoint.y * 0.79));
         }else
         {
             return Qt.point((ParentPoint.x * 0.049),(ParentPoint.y * 0.191));
@@ -120,7 +120,13 @@ Item {
                                                             root.speed/15:root.speed/19;
         var endPos=findEndPos();
         var angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),endPos);
-        return poscalculator.moveToward(Qt.point(root.x,root.y),endPos,vehiclespeed);
+        var nextPos=poscalculator.moveToward(Qt.point(root.x,root.y),endPos,vehiclespeed);
+        if(nextPos==endPos){
+            vehicleReached(vID);
+            return nextPos;
+        }else{
+            return nextPos;
+        }
 
     }
 
