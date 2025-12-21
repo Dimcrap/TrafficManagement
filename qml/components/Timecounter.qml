@@ -14,10 +14,14 @@ import QtQuick.Layouts
     property int round:1
 
      signal changeTlights(var color1,var color2)
-     signal roundsfinsished()
+     signal roundfinsished()
 
      onTrafficstageChanged: {
                    targetCount=targetCountFinder();
+     }
+
+     onRunningChanged: {
+                   counterTimer.running=timecounter.running;
      }
 
 
@@ -91,8 +95,7 @@ import QtQuick.Layouts
                             roundShif.start();
                          }else{
                             //console.log("else condition for executing reset counter executed");
-                            //resetCounter();
-                            roundsfinsished()
+                            resetCounter();
                          }
               }
         }
@@ -140,7 +143,7 @@ import QtQuick.Layouts
               //counterTimer.running=false;
               updateStatus();
               stopCounting();
-              roundsfinsished();
+              roundfinsished();
               changeTlights("off","off");
     }
 

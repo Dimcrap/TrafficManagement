@@ -15,6 +15,9 @@ Item {
     property double  currY: parent.width * 0.115;
     property double currX: parent.height *0.8475
     property string trafficState:"Low Traffic"
+    property var  endPos
+    property var startPos
+    property var stoppoint
 
     signal vehicleReached(int vehicleId)
 
@@ -72,10 +75,10 @@ Item {
 
     function updateVehiclePos(){
         if(moving){
+            console.log("update position exectuions"+Qt.point(currX,currY));
         x=currX;
         y=currY;
         }
-       // console.log("updating position executed");
     }
 
     Image {
@@ -91,7 +94,14 @@ Item {
         repeat:true
         onTriggered: {
 
+            console.log("before movePos finding :"+Qt.point(currX,currY));
             var pos =movePos();
+            console.log("stopPos:"+stoppoint);
+            console.log("nextmove pos:"+pos);
+            if(pos.x>stoppoint.x){
+            console.log("40% off the way reached");
+            movmentTimer.running=false;
+            };
 
             if(pos.x==-1 || pos.y==-1){
                 var restartPos=findStartPos(root.line,root.direction);
@@ -118,8 +128,8 @@ Item {
         var ParentPoint=Qt.point(parentwidth,parentheight);
         var vehiclespeed=(trafficState=="Low Traffic")?root.speed/13:(trafficState=="Medium Traffic")?
                                                             root.speed/15:root.speed/19;
-        var endPos=findEndPos();
-        var angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),endPos);
+        //var mendPos=findEndPos();
+        //var angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),endPos);
         var nextPos=poscalculator.moveToward(Qt.point(root.x,root.y),endPos,vehiclespeed);
         if(nextPos==endPos){
             vehicleReached(vID);
@@ -132,8 +142,14 @@ Item {
 
     Component.onCompleted: {
         var pos =findStartPos(root.line,root.direction);
+        endPos  =findEndPos();
+        startPos=pos//findStartPos(root.line,root.direction)
+        stoppoint=  poscalculator.stopPoint(startPos,endPos,1);
+
+        console.log("start points for StopPos:"+startPos+"end point:"+stoppoint);//root.startPos,root.startPos));
         currX=pos.x;
         currY=pos.y;
+        console.log("object start pos:"+Qt.point(currX,currY));
         updateVehiclePos();
         root.movement(true);
     }

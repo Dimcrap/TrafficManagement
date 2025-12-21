@@ -60,17 +60,25 @@ Item {
 
                if (newVehicle) {
                   // console.log("Successfully created vehicle for line:", line);
+                   /*for (var v of vehiclesList){
+                       console.log("vehiclelits obj:"+v)
+                   }*/
                } else {
                    console.error("createQmlObject returned null for line:", line);
                }
            } catch (error) {
-               // 4. This is the most important step for debugging!
+
                console.error("Error creating QML object for line " + line + ": " + error);
            }
 
            var onvehicleEndingHandler=function(vehicleId){
-               if(simengine.vehicles[vehicleId]){
-                   simengine.vehicles[vehicleId].destroy();
+               const index=vehiclesList.findIndex(vehicle=>vehicle.vID==vehicleId);
+
+               if(index!=-1){
+                   console.log("on ending destroying vehicle with id:"+vehicleId+"index:"+index);
+                   simengine.vehiclesList[index].destroy();
+                   simengine.vehiclesList.splice(index, 1);
+                   //delete vehiclesList[vehicleId];
                }else{
                    console.log("no vehicle found with id:"+vehicleId)
                }
@@ -85,7 +93,7 @@ Item {
         var vehicle =deployMachine(lane,dir,vehicleId);
         vehicles[vehicleId]=vehicle;
         vehiclesList.push(vehicle);
-        return vehicles[vehicleId];
+        return vehicle;
     }
 
     function setVehiclesSpeed(newSpeed){
@@ -99,9 +107,12 @@ Item {
         target:trafficCtrl
 
         function onDeployVehicleSignal(lane,direction){
-            console.log("deploying  vehicle with id:"+simengine.vCount)
-            deployVehicle(simengine.vCount,lane,direction)
-            vCount++;
+            //console.log("deploying  vehicle with id:"+simengine.vCount)
+            if(simengine.executing){
+                deployVehicle(simengine.vCount,lane,direction)
+                vCount++;
+            }
+
         }
     }
 
@@ -143,13 +154,14 @@ Item {
     }
 
     function changeMovment(currdirection){
-        var Vlanecount=(trafficState=="Low Traffic")?2:(trafficState=="Medium Traffic")?3:5;
+
+        /*  var Vlanecount=(trafficState=="Low Traffic")?2:(trafficState=="Medium Traffic")?3:5;
        //console.log("Vlanecount *2="+Vlanecount*2)
         var indexes=findV_indexs(Vlanecount*2,currdirection) //45
         var indexes2=findV_indexs(Vlanecount*2,-currdirection)  //-45
-       /* for(var indx of indexes){
-            console.log(indx);
-        }*/
+    // for(var indx of indexes){
+          //  console.log(indx);
+        //}
 
         if(currdirection==45){
             applyMovment(indexes,false);
@@ -157,7 +169,7 @@ Item {
         }else{
             applyMovment(indexes,true);
             applyMovment(indexes2,false);
-        }
+        }*/
     }
 
     function findV_indexs(vehiclesCount,dir){
@@ -194,7 +206,7 @@ Item {
     function applyMovment(idList,move){
         for(var i =0;i<=idList.length;i++){
            if(simengine.vehicles[idList[i]]){
-               console.log("vehiclelist obj founed")
+               console.log("vehiclelist obj founed");
                simengine.vehicles[idList[i]].moving=move;
            }else{
                 console.log("didn't find out the object");
@@ -208,8 +220,15 @@ Item {
     }
 
     function resetSim(){
+        if(vehiclesList.length>0){
+            console.log("length of the list:"+vehiclesList.length);
         for(var i=vehiclesList.length-1;i>=0;i--){
-            vehiclesList[i].destroy();
+            if(vehiclesList[i]){i
+                console.log("the i"+i)
+                console.log("destroying object:"+vehiclesList[i]);
+                vehiclesList[i].destroy();
+            }
+        }
         }
 
         vehicles= [{}];

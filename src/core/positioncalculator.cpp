@@ -99,23 +99,13 @@ double PositionCalculator::calculateAngle(QPointF startPos, QPointF endPos) cons
        //qDebug() << "Difference:" << (qtAngle - mathAngleDeg);
 
        return qtAngle;
-   /* double dx = endPos.x() - startPos.x();
-    double dy = endPos.y() - startPos.y();
 
-    // Calculate angle in radians using atan2
-    double angleRad = atan2(dy, dx);
-
-    // Convert to degrees
-    double angleDeg = angleRad * 180.0 / M_PI;
-
-    // Normalize to 0-360
-    if (angleDeg < 0) angleDeg += 360.0;
-
-    return angleDeg;*/
 }
 
 QPointF PositionCalculator::moveToward(QPoint currentPos, QPointF targetPos, double speed) const
 {
+    qDebug() << "moveToward called with currentPos:" << currentPos
+             << "targetPos:" << targetPos;
     double dx = targetPos.x() - currentPos.x();
     double dy = targetPos.y() - currentPos.y();
 
@@ -133,6 +123,21 @@ QPointF PositionCalculator::moveToward(QPoint currentPos, QPointF targetPos, dou
     return QPointF(
         currentPos.x() + unitX * speed,
         currentPos.y() + unitY * speed
+        );
+}
+
+QPointF PositionCalculator::stopPoint(QPointF startPos, QPointF endPos, int sec)
+{
+    //qDebug() << "Start:" << startPos << "End:" << endPos ;
+
+    double percentage=40;
+    if (percentage > 1.0) percentage /= 100.0;
+    percentage = qBound(0.0, percentage, 1.0);
+
+    // SIMPLE vector interpolation - no angles needed!
+    return QPointF(
+        startPos.x() + (endPos.x() - startPos.x()) * percentage,
+        startPos.y() + (endPos.y() - startPos.y()) * percentage
         );
 }
 

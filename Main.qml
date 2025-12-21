@@ -189,7 +189,8 @@ Window {
     Connections{
         target:controlPanelHandler
         function onSimulationCommand (command){
-           simEngine.simulation(command);
+          // simEngine.simulation(command);
+            simEngine.deployMachine("right",45,1);
         }
         function onSpeedSlider (value){
             simEngine.runspeed =value;
@@ -211,7 +212,7 @@ Window {
                    // console.log("changeTlights emmited");
                 //simEngine.changeMovment(-45);
             }
-           function onRoundsfinsished(){
+           function onRoundfinsished(){
                 simEngine.simulation(false)
                 simEngine.resetSim();
                 timecounter.stopCounting();
