@@ -189,8 +189,12 @@ Window {
     Connections{
         target:controlPanelHandler
         function onSimulationCommand (command){
-          // simEngine.simulation(command);
+           //simEngine.simulation(command);
             simEngine.deployMachine("right",45,1);
+            simEngine.deployMachine("right",45,5);
+            simEngine.deployMachine("right",45,9);
+            simEngine.deployMachine("right",45,13);
+            simEngine.deployMachine("right",45,17);
         }
         function onSpeedSlider (value){
             simEngine.runspeed =value;
@@ -210,6 +214,7 @@ Window {
                     trafficlight1.state=color1;
                     trafficlight2.state=color2;
                    // console.log("changeTlights emmited");
+               // if(colo1!="yellow"){simEngine.v_stopHandler(color1)}
                 //simEngine.changeMovment(-45);
             }
            function onRoundfinsished(){

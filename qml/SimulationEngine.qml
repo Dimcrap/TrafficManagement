@@ -13,6 +13,10 @@ Item {
     property int vCount: 1
     property string trafficState: "Low Traffic"
     property bool deployed:false
+    property var primaryZlist:primaryZfinder();
+    property var definedV_zs:new Map([["right45",primaryZlist[0]],["left45",primaryZlist[1]],
+                               ["right-45",primaryZlist[2]],["left-45",primaryZlist[3]]])
+    property var laneCapacity:new Map([["right45",5],["left45",5],["right-45",5],["left-45",5]])
 
     signal executionChanged(bool isExecuting)
     signal runSChanged(int newSpeed)
@@ -28,6 +32,9 @@ Item {
 
     onTrafficStateChanged:{
         console.log("traffic state changed")
+        primaryZlist=primaryZfinder();
+        definedV_zs:([["right45",primaryZlist[0]],["left45",primaryZlist[1]],
+                                      ["right-45",primaryZlist[2]],["left-45",3]]);
     }
 
     TrafficController{
@@ -36,7 +43,11 @@ Item {
 
     function deployMachine(line,dir,id){
     var zpropery=defineZ(line,dir);
-
+        if(line=="left"){
+        console.log("deploying dir:"+dir+" with  z:"+zpropery);
+        }
+    var stopingrow=defineStopRow(id,dir,line);
+    console.log("vehicle created by id:"+stopingrow)
     var VehicleQml = `
         import QtQuick 2.15
         import  TrafficManagement 1.0
@@ -50,6 +61,7 @@ Item {
             height: 50
             trafficState:"${simengine.trafficState}"
             z:${zpropery}
+            stopRow:${stopingrow}
         }
     `;
 
@@ -67,7 +79,6 @@ Item {
                    console.error("createQmlObject returned null for line:", line);
                }
            } catch (error) {
-
                console.error("Error creating QML object for line " + line + ": " + error);
            }
 
@@ -75,7 +86,7 @@ Item {
                const index=vehiclesList.findIndex(vehicle=>vehicle.vID==vehicleId);
 
                if(index!=-1){
-                   console.log("on ending destroying vehicle with id:"+vehicleId+"index:"+index);
+                   //console.log("on ending destroying vehicle with id:"+vehicleId+"index:"+index);
                    simengine.vehiclesList[index].destroy();
                    simengine.vehiclesList.splice(index, 1);
                    //delete vehiclesList[vehicleId];
@@ -103,6 +114,12 @@ Item {
 
     }
 
+    function defineStopRow(vid,vdir,vlane){
+    var resultId=(vdir==45&&vlane=="right")?vid:(vdir==-45&&vlane=="right")?vid-1:
+                (vdir==45&&vlane=="left")?vid-2:vid-3;
+        return (resultId+3)/4;
+    }
+
     Connections{
         target:trafficCtrl
 
@@ -123,11 +140,11 @@ Item {
             if(!deployed){
                 //console.log("traffic status from simulation func:"+trafficState);
                 if(simengine.trafficState=="High Traffic"){
-                    trafficCtrl.triggerSimulation(5,(600 / (runspeed/50)));
+                    trafficCtrl.triggerSimulation(5,(600 / ((40+runspeed*0.12)/50)));
                 }else if( simengine.trafficState=="Medium Traffic"){
-                    trafficCtrl.triggerSimulation(3,(500 / (runspeed/50)));
+                    trafficCtrl.triggerSimulation(3,(500 / ((40+runspeed*0.12)/50)));
                 }else {//( simengine.trafficState=="Low Traffic"){
-                    trafficCtrl.triggerSimulation(1,(500 / (runspeed/50)));
+                    trafficCtrl.triggerSimulation(1,(500 / ((40+runspeed*0.12)/50)));
                 }
                 deployed=true;
             }else{
@@ -142,21 +159,33 @@ Item {
     }
 
     function defineZ(lane,direction){
-        if(lane=="right"&&direction==45){
-            return 1
-        }else if(lane=="left"&&direction==45){
-            return 2
-        }else if(lane=="right"&&direction==-45){
-            return 3
+
+        var zvalue=simengine.definedV_zs.get(lane+direction)
+        if(lane=="right"){
+            simengine.definedV_zs.set(lane+direction,++zvalue)
+            //console.log("lane was right");
         }else{
-            return 4
+            simengine.definedV_zs.set(lane+direction,--zvalue)
+            //console.log("lane was left")
+        }
+
+        return zvalue;
+    }
+
+    function primaryZfinder(){
+        if(simengine.trafficState=="Low Traffic"){
+            return [0,3,4,7];
+        }else if(simengine.trafficState=="Medium Traffic"){
+            return [0,5,6,11];
+        }else{
+            return [0,9,10,19];
         }
     }
 
     function changeMovment(currdirection){
 
-        /*  var Vlanecount=(trafficState=="Low Traffic")?2:(trafficState=="Medium Traffic")?3:5;
-       //console.log("Vlanecount *2="+Vlanecount*2)
+     /*  var Vlanecount=(trafficState=="Low Traffic")?2:(trafficState=="Medium Traffic")?3:5;
+     // console.log("Vlanecount *2="+Vlanecount*2)
         var indexes=findV_indexs(Vlanecount*2,currdirection) //45
         var indexes2=findV_indexs(Vlanecount*2,-currdirection)  //-45
     // for(var indx of indexes){
@@ -172,29 +201,45 @@ Item {
         }*/
     }
 
-    function findV_indexs(vehiclesCount,dir){
-        var list=[];
+    function v_stopHandler(clr1){
+        var indexs;
+
+        definedV_zs();
+        if(cl=="red"){
+            indexs=findV_ids(45);
+
+        }else{
+            indexs=findV_ids(-45);
+        }
+
+    }
+
+    function findV_ids(dir){
+        var list=[[],[]];
         let ex=0
+        var startP;
+        var vehiclesCount=(trafficState=="Low Traffic")?4:(trafficState=="Medium Traffic")?6:10;
 
         if(dir==45){
             for(var i=1;ex<=vehiclesCount/2;i+=4){
-                list.push(i);
+                list[0].push(i);
                 ex++;
             }
             ex=0;
-            for(var f=3;ex<=vehiclesCount/2;f+=4){
-                list.push(f);
+            for(var f=startP;ex<=vehiclesCount/2;f+=4){
+                list[1].push(f);
                 ex++;
             }
             ex=0;
+
         }else{
             for(var c=2;ex<=vehiclesCount/2;c+=4){
-                list.push(c);
+                list[0].push(c);
                 ex++;
             }
             ex=0;
             for(var k=4;ex<=vehiclesCount/2;k+=4){
-                list.push(k);
+                list[1].push(k);
                 ex++;
             }
 
@@ -203,19 +248,16 @@ Item {
         return list;
     }
 
-    function applyMovment(idList,move){
-        for(var i =0;i<=idList.length;i++){
-           if(simengine.vehicles[idList[i]]){
-               console.log("vehiclelist obj founed");
-               simengine.vehicles[idList[i]].moving=move;
-           }else{
-                console.log("didn't find out the object");
-           }
-            /*if(simengine.vehicles[2]){
-                console.log("vechicles[2] do exist");
+    function applyStopProcess(vlists,proc){
+
+        for(var i=0;i<vlists.length;i++){
+            if(simengine.vehicles[vlists[i]]){
+                //console.log("vehiclelist obj founed");
+                //simengine.vehicles[vlists[i]].moving=move;
+                simengine.vehicles[vlists[i]].stopProcess=proc;
             }else{
-                console.log("vehicles[2] didn't exist");
-            }*/
+                 console.log("didn't find out the object with id:"+vlists[i]);
+            }
         }
     }
 
@@ -223,9 +265,9 @@ Item {
         if(vehiclesList.length>0){
             console.log("length of the list:"+vehiclesList.length);
         for(var i=vehiclesList.length-1;i>=0;i--){
-            if(vehiclesList[i]){i
-                console.log("the i"+i)
-                console.log("destroying object:"+vehiclesList[i]);
+            if(vehiclesList[i]){
+                //console.log("the i"+i)
+                //console.log("destroying object:"+vehiclesList[i]);
                 vehiclesList[i].destroy();
             }
         }
@@ -233,7 +275,7 @@ Item {
 
         vehicles= [{}];
         vehiclesList= [];
-        vCount=0;
+        vCount=1;
         executing=false;
         deployed=false;
     }

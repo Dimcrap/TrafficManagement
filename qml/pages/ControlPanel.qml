@@ -52,7 +52,7 @@ Rectangle {
             Layout.fillWidth:true
             from: 1
             to:50
-            value: 30
+            value: 25
             onValueChanged: controlPanelHandler.setSpeed(value)
                 //console.log("Speed set to :",value)
         }

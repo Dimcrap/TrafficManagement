@@ -85,7 +85,6 @@ QPointF PositionCalculator::getnextMovement(QString lane, float angle, QPoint cu
 
 double PositionCalculator::calculateAngle(QPointF startPos, QPointF endPos) const
 {
-
     QLineF line(startPos,endPos);
     double qtAngle =line.angle();
 
@@ -104,20 +103,17 @@ double PositionCalculator::calculateAngle(QPointF startPos, QPointF endPos) cons
 
 QPointF PositionCalculator::moveToward(QPoint currentPos, QPointF targetPos, double speed) const
 {
-    qDebug() << "moveToward called with currentPos:" << currentPos
-             << "targetPos:" << targetPos;
+   // qDebug() << "moveToward called with currentPos:" << currentPos
+     //        << "targetPos:" << targetPos;
     double dx = targetPos.x() - currentPos.x();
     double dy = targetPos.y() - currentPos.y();
-
-    // Calculate distance to target
     double distance = sqrt(dx*dx + dy*dy);
 
-    // If we're at or very close to target, return target
+
     if (distance <= speed) {
         return targetPos;
     }
 
-    // Normalize the vector (make it unit length)
     double unitX = dx / distance;
     double unitY = dy / distance;
     return QPointF(
@@ -128,13 +124,10 @@ QPointF PositionCalculator::moveToward(QPoint currentPos, QPointF targetPos, dou
 
 QPointF PositionCalculator::stopPoint(QPointF startPos, QPointF endPos, int sec)
 {
-    //qDebug() << "Start:" << startPos << "End:" << endPos ;
-
-    double percentage=40;
+    double percentage=(sec==1)?38:(sec==2)?29:(sec==3)?20:(sec==4)?12:4;
     if (percentage > 1.0) percentage /= 100.0;
     percentage = qBound(0.0, percentage, 1.0);
 
-    // SIMPLE vector interpolation - no angles needed!
     return QPointF(
         startPos.x() + (endPos.x() - startPos.x()) * percentage,
         startPos.y() + (endPos.y() - startPos.y()) * percentage

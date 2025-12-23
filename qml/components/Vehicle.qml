@@ -9,7 +9,6 @@ Item {
     property int direction: 45
     property int speed: 30
     property int  vID: 0
-    z:1
     property var parentwidth:parent.width
     property var parentheight:parent.height
     property double  currY: parent.width * 0.115;
@@ -18,7 +17,8 @@ Item {
     property var  endPos
     property var startPos
     property var stoppoint
-
+    property bool stopProcess:false
+    property double stopRow
     signal vehicleReached(int vehicleId)
 
     Positioncalculator{
@@ -75,7 +75,7 @@ Item {
 
     function updateVehiclePos(){
         if(moving){
-            console.log("update position exectuions"+Qt.point(currX,currY));
+            //console.log("update position exectuions"+Qt.point(currX,currY));
         x=currX;
         y=currY;
         }
@@ -94,14 +94,15 @@ Item {
         repeat:true
         onTriggered: {
 
-            console.log("before movePos finding :"+Qt.point(currX,currY));
+            //console.log("before movePos finding :"+Qt.point(currX,currY));
             var pos =movePos();
-            console.log("stopPos:"+stoppoint);
-            console.log("nextmove pos:"+pos);
-            if(pos.x>stoppoint.x){
-            console.log("40% off the way reached");
-            movmentTimer.running=false;
-            };
+           // console.log("stopPos:"+stoppoint);
+           //console.log("nextmove pos:"+pos);
+            if(stoppoint.x<pos.x){movmentTimer.running=false}else
+            /*if(root.stopProcess){
+                applyStop()
+            }else{
+             movmentTimer.running=true*/
 
             if(pos.x==-1 || pos.y==-1){
                 var restartPos=findStartPos(root.line,root.direction);
@@ -109,6 +110,8 @@ Item {
                 currX=pos.x;
                 currY=pos.y;
             }
+
+            //}
 
             updateVehiclePos();
         }
@@ -128,9 +131,12 @@ Item {
         var ParentPoint=Qt.point(parentwidth,parentheight);
         var vehiclespeed=(trafficState=="Low Traffic")?root.speed/13:(trafficState=="Medium Traffic")?
                                                             root.speed/15:root.speed/19;
-        //var mendPos=findEndPos();
-        //var angle=poscalculator.calculateAngle(Qt.point(root.x,root.y),endPos);
         var nextPos=poscalculator.moveToward(Qt.point(root.x,root.y),endPos,vehiclespeed);
+        /*if(stopProcess){
+            applyStop(true);
+        }else{
+            applyStop(false)
+        }*/
         if(nextPos==endPos){
             vehicleReached(vID);
             return nextPos;
@@ -140,16 +146,31 @@ Item {
 
     }
 
+    function applyStop(xpos){
+        if((root.direction==45&&root.line=="right")||(root.direction==-45)&&(root.line=="left")){
+        if(xpos>stoppoint.x){
+            movmentTimer=false;
+        }
+
+        }else{
+        if(xpos>stoppoint.x){
+            movmentTimer=false;
+        }
+
+        }
+
+    }
+
     Component.onCompleted: {
         var pos =findStartPos(root.line,root.direction);
         endPos  =findEndPos();
         startPos=pos//findStartPos(root.line,root.direction)
-        stoppoint=  poscalculator.stopPoint(startPos,endPos,1);
-
-        console.log("start points for StopPos:"+startPos+"end point:"+stoppoint);//root.startPos,root.startPos));
+       // stoppoint=  poscalculator.stopPoint(startPos,endPos,root.stopRow);
+        stoppoint=poscalculator.stopPoint(startPos,endPos,root.stopRow)
+        console.log("start points for StopPos:"+startPos+"stop point:"+stoppoint);//root.startPos,root.startPos));
         currX=pos.x;
         currY=pos.y;
-        console.log("object start pos:"+Qt.point(currX,currY));
+        //console.log("object start pos:"+Qt.point(currX,currY));
         updateVehiclePos();
         root.movement(true);
     }
