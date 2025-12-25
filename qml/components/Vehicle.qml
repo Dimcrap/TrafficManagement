@@ -21,6 +21,15 @@ Item {
     property double stopRow
     signal vehicleReached(int vehicleId)
 
+    onStopProcessChanged: {
+        if(!root.stopProcess){
+            console.log("stopProcess is false"+root.vID)
+            movement(true)
+        }else{
+            applyStop(currX)
+        }
+    }
+
     Positioncalculator{
         id:poscalculator
     }
@@ -93,16 +102,15 @@ Item {
         running :false
         repeat:true
         onTriggered: {
-
             //console.log("before movePos finding :"+Qt.point(currX,currY));
             var pos =movePos();
-           // console.log("stopPos:"+stoppoint);
+           //console.log("stopPos:"+stoppoint);
            //console.log("nextmove pos:"+pos);
-            if(stoppoint.x<pos.x){movmentTimer.running=false}else
-            /*if(root.stopProcess){
-                applyStop()
-            }else{
-             movmentTimer.running=true*/
+
+            if(root.stopProcess){
+                applyStop(pos.x);
+                console.log("stopProcess is true!!!! vID:"+root.vID);
+            }
 
             if(pos.x==-1 || pos.y==-1){
                 var restartPos=findStartPos(root.line,root.direction);
@@ -110,8 +118,6 @@ Item {
                 currX=pos.x;
                 currY=pos.y;
             }
-
-            //}
 
             updateVehiclePos();
         }
@@ -132,11 +138,7 @@ Item {
         var vehiclespeed=(trafficState=="Low Traffic")?root.speed/13:(trafficState=="Medium Traffic")?
                                                             root.speed/15:root.speed/19;
         var nextPos=poscalculator.moveToward(Qt.point(root.x,root.y),endPos,vehiclespeed);
-        /*if(stopProcess){
-            applyStop(true);
-        }else{
-            applyStop(false)
-        }*/
+
         if(nextPos==endPos){
             vehicleReached(vID);
             return nextPos;
@@ -147,14 +149,18 @@ Item {
     }
 
     function applyStop(xpos){
-        if((root.direction==45&&root.line=="right")||(root.direction==-45)&&(root.line=="left")){
-        if(xpos>stoppoint.x){
-            movmentTimer=false;
+
+        if((root.direction==45&&root.line=="right")||(root.direction==-45&&root.line=="left")){
+            if(xpos>stoppoint.x&& xpos< stoppoint.x +stoppoint.x *0.5){
+               // console.log("first condition applied")
+            movement(false);
         }
 
         }else{
-        if(xpos>stoppoint.x){
-            movmentTimer=false;
+
+        if(xpos<stoppoint.x && xpos> stoppoint.x - stoppoint.x * 0.5){
+            //console.log("second condition applied")
+            movement(false);
         }
 
         }
@@ -165,9 +171,8 @@ Item {
         var pos =findStartPos(root.line,root.direction);
         endPos  =findEndPos();
         startPos=pos//findStartPos(root.line,root.direction)
-       // stoppoint=  poscalculator.stopPoint(startPos,endPos,root.stopRow);
-        stoppoint=poscalculator.stopPoint(startPos,endPos,root.stopRow)
-        console.log("start points for StopPos:"+startPos+"stop point:"+stoppoint);//root.startPos,root.startPos));
+        stoppoint=  poscalculator.stopPoint(startPos,endPos,root.stopRow);
+       // console.log("vID:"+vID+"stopRow"+stopRow+"start points:"+startPos+"stop point:"+stoppoint);//root.startPos,root.startPos));
         currX=pos.x;
         currY=pos.y;
         //console.log("object start pos:"+Qt.point(currX,currY));

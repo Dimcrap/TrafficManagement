@@ -189,12 +189,9 @@ Window {
     Connections{
         target:controlPanelHandler
         function onSimulationCommand (command){
-           //simEngine.simulation(command);
-            simEngine.deployMachine("right",45,1);
-            simEngine.deployMachine("right",45,5);
-            simEngine.deployMachine("right",45,9);
-            simEngine.deployMachine("right",45,13);
-            simEngine.deployMachine("right",45,17);
+           simEngine.simulation(command);
+           //simEngine.deployMachine("right",45,1);
+
         }
         function onSpeedSlider (value){
             simEngine.runspeed =value;
@@ -204,7 +201,7 @@ Window {
             timecounter.resetCounter();
         }
         function onTrafficState(state){
-            console.log("main qml caught signal:"+state)
+            //console.log("main qml caught signal:"+state)
             simEngine.trafficState=state;
         }
     }
@@ -213,9 +210,9 @@ Window {
             function onChangeTlights(color1,color2){
                     trafficlight1.state=color1;
                     trafficlight2.state=color2;
+                if(color1!="yellow"){simEngine.v_stopHandler(color1)}
                    // console.log("changeTlights emmited");
-               // if(colo1!="yellow"){simEngine.v_stopHandler(color1)}
-                //simEngine.changeMovment(-45);
+
             }
            function onRoundfinsished(){
                 simEngine.simulation(false)

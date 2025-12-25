@@ -42,7 +42,7 @@ Rectangle {
             text:"Reset"
             Layout.fillWidth: true
             onClicked:{
-                console.log("Reset button clicked")
+                //console.log("Reset button clicked")
                 controlPanelHandler.resetEmiter();
             }
         }
