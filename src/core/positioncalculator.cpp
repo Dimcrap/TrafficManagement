@@ -128,7 +128,7 @@ QPointF PositionCalculator::stopPoint(QPointF startPos, QPointF endPos, int sec)
     double percentage=(sec==1)?38:(sec==2)?29:(sec==3)?20:(sec==4)?12:4;
     if (percentage > 1.0) percentage /= 100.0;
     percentage = qBound(0.0, percentage, 1.0);
-    //qDebug()<<"precentage:"<<percentage;
+   // qDebug()<<"precentage:"<<percentage;
 
     //double percentage=60;
     return QPointF(

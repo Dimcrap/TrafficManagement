@@ -54,12 +54,12 @@ import QtQuick.Layouts
      function targetCountFinder(){
               switch (timecounter.trafficstage){
               case "Medium Traffic":
-                            return 12;
+                            return 8;
               case "High Traffic":
-                            return 18;
+                            return 12;
               default:
                            // console.log("targetCountFinder value :"+trafficstage)
-                            return 8;
+                            return 6;
               }
      }
 
@@ -73,7 +73,9 @@ import QtQuick.Layouts
               var cols=defineColor()
               changeTlights(cols[0],cols[1]);
               //changeTlights("red","green");
-              counterTimer.start();
+              if(timecounter.running){
+                       counterTimer.start();
+              };
           }
     }
 

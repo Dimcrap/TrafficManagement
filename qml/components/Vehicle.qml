@@ -19,15 +19,19 @@ Item {
     property var stoppoint
     property bool stopProcess:false
     property double stopRow
+    property bool stoppted:false
+    //property bool stopvalid: false
     signal vehicleReached(int vehicleId)
 
     onStopProcessChanged: {
         if(!root.stopProcess){
             console.log("stopProcess is false"+root.vID)
-            movement(true)
+            resumeMove.start()
         }else{
-            applyStop(currX)
+
         }
+
+        stoppted=true
     }
 
     Positioncalculator{
@@ -97,6 +101,16 @@ Item {
     }
 
     Timer{
+        id:resumeMove
+        interval:stopRow*600
+        running: false
+        repeat: false
+        onTriggered: {
+            movement(true)
+        }
+    }
+
+    Timer{
         id:movmentTimer
         interval: 35
         running :false
@@ -109,7 +123,7 @@ Item {
 
             if(root.stopProcess){
                 applyStop(pos.x);
-                console.log("stopProcess is true!!!! vID:"+root.vID);
+               //console.log("stopProcess is true!!!! vID:"+root.vID);
             }
 
             if(pos.x==-1 || pos.y==-1){
@@ -151,14 +165,14 @@ Item {
     function applyStop(xpos){
 
         if((root.direction==45&&root.line=="right")||(root.direction==-45&&root.line=="left")){
-            if(xpos>stoppoint.x&& xpos< stoppoint.x +stoppoint.x *0.5){
-               // console.log("first condition applied")
+            if(xpos>stoppoint.x && xpos< stoppoint.x +stoppoint.x *0.1){
+               //console.log("first condition applied")
             movement(false);
         }
 
         }else{
 
-        if(xpos<stoppoint.x && xpos> stoppoint.x - stoppoint.x * 0.5){
+        if(xpos<stoppoint.x && xpos> stoppoint.x - stoppoint.x * 0.1){
             //console.log("second condition applied")
             movement(false);
         }

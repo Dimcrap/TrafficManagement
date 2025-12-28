@@ -39,6 +39,7 @@ Item {
         countlimit=(trafficState=="Low Traffic")?8:(trafficState=="Medium Traffic")?12:20;
     }
 
+
     onDeployedChanged: {
        // console.log("stopping handler is executing");
         v_stopHandler("red");
@@ -138,6 +139,9 @@ Item {
             if(simengine.executing){
                 deployVehicle(simengine.vCount,lane,direction)
                 vCount++;
+
+                v_stopHandler("red");
+
             }
             if(vCount==countlimit){
                 deployed=true
@@ -153,9 +157,9 @@ Item {
             if(!deployed){
                 //console.log("traffic status from simulation func:"+trafficState);
                 if(simengine.trafficState=="High Traffic"){
-                    trafficCtrl.triggerSimulation(5,(600 / ((30+runspeed*0.15)/50)));
+                    trafficCtrl.triggerSimulation(5,(400 / ((8+runspeed*0.15)/50)));
                 }else if( simengine.trafficState=="Medium Traffic"){
-                    trafficCtrl.triggerSimulation(3,(500 / ((25+runspeed*0.15)/50)));
+                    trafficCtrl.triggerSimulation(3,(500 / ((20+runspeed*0.15)/50)));
                 }else {//( simengine.trafficState=="Low Traffic")
                     trafficCtrl.triggerSimulation(1,(500 / ((25+runspeed*0.15)/50)));
                 }
@@ -201,14 +205,14 @@ Item {
         var idsM45=findV_ids(-45);
 
         if(clr1=="red"){
-            //console.log("full ids:"+ids45+"Rids:"+idsM45)
-            applyStopProcess(ids45,true);
-            applyStopProcess(idsM45,false);
+           //console.log("RED;full ids:"+ids45+"Rids:"+idsM45)
+            applyStopProcess(ids45,false);
+            applyStopProcess(idsM45,true);
 
         }else{
-            //console.log("full ids:"+ids+"Rids:"+Rids)
-            applyStopProcess(idsM45,true);
-            applyStopProcess(ids45,false);
+            //console.log("GREEN;full ids:"+ids45+"Rids:"+idsM45)
+            applyStopProcess(ids45,true);
+            applyStopProcess(idsM45,false);
         }
 
     }
@@ -216,27 +220,27 @@ Item {
     function findV_ids(dir){
         var list=[[],[]];
         let ex=0
-        var vehiclesCount=(trafficState=="Low Traffic")?4:(trafficState=="Medium Traffic")?6:10;
+        var vehiclesCountLane=(trafficState=="Low Traffic")?2:(trafficState=="Medium Traffic")?6:10;
         //console.log("v dir count:"+vehiclesCount+"lane in dir:"+vehiclesCount/2)
         if(dir==45){
-            for(var i=1;ex<vehiclesCount/2;i+=4){
+            for(var i=1;ex<vehiclesCountLane/2;i+=4){
                 list[0].push(i);
                 ex++;
             }
             ex=0;
-            for(var f=3;ex<vehiclesCount/2;f+=4){
+            for(var f=3;ex<vehiclesCountLane/2;f+=4){
                 list[1].push(f);
                 ex++;
             }
             ex=0;
 
         }else{
-            for(var c=2;ex<vehiclesCount/2;c+=4){
+            for(var c=2;ex<vehiclesCountLane/2;c+=4){
                 list[0].push(c);
                 ex++;
             }
             ex=0;
-            for(var k=4;ex<vehiclesCount/2;k+=4){
+            for(var k=4;ex<vehiclesCountLane/2;k+=4){
                 list[1].push(k);
                 ex++;
             }
@@ -255,11 +259,15 @@ Item {
         for(var i=0;i<vlists[0].length;i++){
             const vehicleToChange = vehiclesList.find(vehicle => vehicle.vID === vlists[0][i]);
             const RvehicleToChange = vehiclesList.find(vehicle => vehicle.vID === vlists[1][i]);
+            for(var v of vehiclesList){
+                console.log("vehiclesList id:"+v.vID)
+            }
 
+           // console.log("vehicles to change:"+vehicleToChange+" and "+RvehicleToChange)
             if(!vehicleToChange||!RvehicleToChange){
-                console.log("didn't find out the object with id:"+vlists[0][i]+"and:"+vlists[1][i]);
+                console.log("didn't find out the object with id:"+vlists[0][i]+"and:"+vlists[1][i]+" the i:"+i);
             }else{
-                console.log("vehiclelist obj founed ids:"+vlists[0][i]+"and"+vlists[1][i]);
+                console.log("vehiclelist obj founed ids:"+vlists[0][i]+"and"+vlists[1][i]+'\n proecces:'+proc);
                 //simengine.vehicles[vlists[i]].moving=move;
                 vehicleToChange["stopProcess"]=proc;
                 RvehicleToChange["stopProcess"]=proc;

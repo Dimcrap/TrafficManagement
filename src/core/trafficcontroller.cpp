@@ -5,13 +5,14 @@
 trafficcontroller::trafficcontroller(QObject * parent):QObject(parent){
     m_timer =new QTimer(this);
     connect(m_timer,&QTimer::timeout,this,[this]{
+        if(!m_remainvehicles<=0){
         emit deployVehicleSignal("right",45);
         emit deployVehicleSignal("right",-45);
         emit deployVehicleSignal("left",45);
         emit deployVehicleSignal("left",-45);
-
+        }
         m_remainvehicles --;
-        if(m_remainvehicles<=0){
+        if(m_remainvehicles<0){
             m_timer->stop();
         }
 

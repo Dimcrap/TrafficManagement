@@ -197,7 +197,7 @@ Window {
             simEngine.runspeed =value;
         }
         function onResetbtn (){
-           simEngine.simulation(false)
+           simEngine.simulation(false);
             timecounter.resetCounter();
         }
         function onTrafficState(state){
@@ -210,10 +210,13 @@ Window {
             function onChangeTlights(color1,color2){
                     trafficlight1.state=color1;
                     trafficlight2.state=color2;
-                if(color1!="yellow"){simEngine.v_stopHandler(color1)}
-                   // console.log("changeTlights emmited");
 
-            }
+                if(color1!="yellow")
+                {simEngine.v_stopHandler(color1);
+                 //   console.log("stophandler executed with color:"+color1);
+                }
+                   // console.log("changeTlights emmited");
+                }
            function onRoundfinsished(){
                 simEngine.simulation(false)
                 simEngine.resetSim();
